@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100%;min-height:100%;margin:0;padding:0;}body{overscroll-behavior-y:none;-webkit-tap-highlight-color:transparent;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-tertiary": "#ffffff", "status-operational-bg": "#ecfdf5", "status-degraded-bg": "#fffbeb", "on-secondary-container": "#fffbff", "tertiary-fixed": "#ffddb8", "on-surface-variant": "#3d4947", "on-tertiary-fixed-variant": "#653e00", "error-container": "#ffdad6", "tertiary-container": "#a36700", "surface-dim": "#d2d9f4", "canvas-bg": "#ffffff", "on-tertiary-fixed": "#2a1700", "status-operational": "#10b981", "error": "#ba1a1a", "on-background": "#131b2e", "on-primary-fixed-variant": "#005049", "primary": "#00685f", "surface-bright": "#faf8ff", "inverse-on-surface": "#eef0ff", "inverse-primary": "#6bd8cb", "outline-variant": "#bcc9c6", "surface": "#faf8ff", "surface-variant": "#dae2fd", "text-caption": "#94a3b8", "on-error": "#ffffff", "status-outage": "#ef4444", "surface-container-lowest": "#ffffff", "surface-tint": "#006a61", "surface-container-low": "#f2f3ff", "on-primary": "#ffffff", "background": "#faf8ff", "secondary": "#b61722", "surface-container": "#eaedff", "surface-subtle": "#f8fafc", "on-surface": "#131b2e", "mint-badge-tint": "#ccfbf1", "outline": "#6d7a77", "primary-fixed": "#89f5e7", "on-primary-container": "#f4fffc", "secondary-fixed-dim": "#ffb3ad", "surface-container-highest": "#dae2fd", "primary-container": "#008378", "secondary-fixed": "#ffdad7", "surface-container-high": "#e2e7ff", "on-secondary-fixed-variant": "#930013", "text-primary": "#0f172a", "accent-teal": "#14b8a6", "surface-border": "#e2e8f0", "primary-fixed-dim": "#6bd8cb", "tertiary": "#825100", "tertiary-fixed-dim": "#ffb95f", "accent-teal-dark": "#0f766e", "on-error-container": "#93000a", "text-secondary": "#475569", "inverse-surface": "#283044", "status-degraded": "#f59e0b", "on-primary-fixed": "#00201d", "on-secondary-fixed": "#410004", "secondary-container": "#da3437", "on-tertiary-container": "#fffbff", "on-secondary": "#ffffff", "status-outage-bg": "#fef2f2" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "margin-tablet": "1.5rem", "margin-desktop": "2rem", "margin": "1rem", "space-xs": "0.25rem", "space-lg": "1rem", "space-md": "0.75rem", "gutter-desktop": "1.5rem", "space-xl": "1.5rem", "gutter": "0.75rem", "space-sm": "0.5rem", "gutter-tablet": "1rem" }, "fontFamily": { "code-sm": ["JetBrains Mono"], "title-sm": ["Plus Jakarta Sans"], "body-sm": ["Inter"], "code-lg": ["JetBrains Mono"], "label-xs": ["JetBrains Mono"], "code-md": ["JetBrains Mono"], "body-md": ["Inter"], "headline-lg": ["Plus Jakarta Sans"], "headline-lg-mobile": ["Plus Jakarta Sans"], "body-lg": ["Inter"], "headline-xl": ["Plus Jakarta Sans"], "headline-md": ["Plus Jakarta Sans"], "headline-xl-mobile": ["Plus Jakarta Sans"] }, "fontSize": { "code-sm": ["11px", { "lineHeight": "14px", "fontWeight": "500" }], "title-sm": ["15px", { "lineHeight": "22px", "fontWeight": "600" }], "body-sm": ["12px", { "lineHeight": "18px", "fontWeight": "400" }], "code-lg": ["14px", { "lineHeight": "20px", "fontWeight": "600" }], "label-xs": ["10px", { "lineHeight": "12px", "fontWeight": "600" }], "code-md": ["12px", { "lineHeight": "16px", "fontWeight": "500" }], "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }], "headline-lg": ["24px", { "lineHeight": "32px", "fontWeight": "700" }], "headline-lg-mobile": ["20px", { "lineHeight": "28px", "fontWeight": "700" }], "body-lg": ["15px", { "lineHeight": "22px", "fontWeight": "400" }], "headline-xl": ["32px", { "lineHeight": "40px", "fontWeight": "800" }], "headline-md": ["18px", { "lineHeight": "26px", "fontWeight": "600" }], "headline-xl-mobile": ["26px", { "lineHeight": "34px", "fontWeight": "800" }] } } } };</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased min-h-screen flex flex-col"><header class="fixed top-0 w-full z-50 bg-canvas-bg/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] pt-safe"><div class="h-16 px-margin flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-xs"><span class="font-headline-md text-headline-md font-extrabold tracking-tight text-primary">SIGAP</span><span class="bg-mint-badge-tint text-accent-teal-dark font-label-xs text-label-xs px-1.5 py-0.5 rounded uppercase tracking-wider">SRE</span></div><button class="flex items-center gap-1 bg-surface-subtle px-2.5 py-1.5 rounded-lg max-w-[170px] active:scale-95 transition-transform"><span class="material-symbols-outlined text-primary text-[16px]">cloud_done</span><span class="font-code-sm text-code-sm text-text-primary truncate">prod-cluster-01</span><span class="material-symbols-outlined text-text-secondary text-[16px]">expand_more</span></button><div class="flex items-center gap-space-xs"><button aria-label="Notifications" class="relative w-11 h-11 flex items-center justify-center text-text-secondary active:text-text-primary transition-colors"><span class="material-symbols-outlined text-[22px]">notifications</span><span class="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-secondary ring-2 ring-canvas-bg"></span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex-1 w-full pt-16 pb-24 bg-surface"><div class="flex flex-col w-full px-margin py-space-md space-y-space-lg">
+<!-- Urgent Incident Banner -->
+<section class="bg-status-outage-bg rounded-xl p-space-md shadow-sm relative overflow-hidden">
+<div class="absolute left-0 top-0 bottom-0 w-1.5 bg-status-outage"></div>
+<div class="flex flex-col space-y-space-sm pl-space-xs">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-status-outage text-[18px]">error</span>
+<span class="bg-secondary-fixed text-secondary font-label-xs text-label-xs px-2 py-0.5 rounded uppercase tracking-wider font-bold">P1 Critical</span>
+</div>
+<span class="font-code-sm text-code-sm text-text-caption">14m ago</span>
+</div>
+<div>
+<h2 class="font-title-sm text-title-sm text-text-primary tracking-tight">Payment Gateway API Down (HTTP 502)</h2>
+<p class="font-body-sm text-body-sm text-text-secondary mt-0.5">Elevated 5xx rates across IAD-01 edge proxy. Payment settlement processing degraded.</p>
+</div>
+<div class="flex items-center gap-space-sm pt-space-xs">
+<button class="flex-1 bg-canvas-bg text-text-primary font-code-sm text-code-sm py-2 px-space-md rounded-lg shadow-sm text-center active:scale-[0.98] transition-transform" id="ack-btn">
+          Acknowledge
+        </button>
+<button class="flex-1 bg-primary text-on-primary font-code-sm text-code-sm py-2 px-space-md rounded-lg shadow-sm flex items-center justify-center gap-1 active:scale-[0.98] transition-transform" id="triage-btn">
+<span>AI Triage</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Reliability & Fleet Health Radial Hero -->
+<section class="bg-canvas-bg rounded-xl p-space-lg shadow-sm flex flex-col items-center">
+<div class="w-full flex items-center justify-between mb-space-md">
+<div>
+<span class="font-label-xs text-label-xs text-text-caption uppercase tracking-wider">Fleet Stability</span>
+<h3 class="font-title-sm text-title-sm text-text-primary">30-Day Fleet Reliability</h3>
+</div>
+<div class="bg-surface-subtle px-2.5 py-1 rounded-full">
+<span class="font-code-sm text-code-sm text-text-secondary">Target: 99.90%</span>
+</div>
+</div>
+<!-- Radial Progress Display -->
+<div class="relative w-44 h-44 flex items-center justify-center my-space-xs">
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 160 160">
+<!-- Background Track -->
+<circle class="text-surface-subtle" cx="80" cy="80" fill="transparent" r="68" stroke="currentColor" stroke-width="12"></circle>
+<!-- Progress Ring (99.85%) -->
+<circle class="text-primary transition-all duration-1000 ease-out" cx="80" cy="80" fill="transparent" id="reliability-gauge" r="68" stroke="currentColor" stroke-dasharray="427.25" stroke-dashoffset="6.4" stroke-linecap="round" stroke-width="12"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center text-center p-2">
+<span class="font-headline-xl-mobile text-headline-xl-mobile text-text-primary tracking-tight">99.85<span class="text-primary font-title-sm">%</span></span>
+<div class="flex items-center gap-1 mt-0.5">
+<span class="w-1.5 h-1.5 rounded-full bg-status-operational"></span>
+<span class="font-code-sm text-code-sm text-status-operational">Within SLA Buffer</span>
+</div>
+<span class="font-label-xs text-label-xs text-text-caption mt-0.5">14m downtime logged</span>
+</div>
+</div>
+<!-- Metric Footers with divider -->
+<div class="w-full grid grid-cols-2 gap-space-sm pt-space-md mt-space-sm bg-surface-subtle/60 rounded-xl p-space-sm">
+<div class="flex flex-col items-center justify-center text-center">
+<span class="font-label-xs text-label-xs text-text-caption uppercase">Total Heartbeats</span>
+<span class="font-code-lg text-code-lg text-text-primary mt-0.5">1.48M</span>
+<span class="font-code-sm text-code-sm text-status-operational mt-0.5 flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[13px]">arrow_upward</span> 99.99% valid
+        </span>
+</div>
+<div class="flex flex-col items-center justify-center text-center">
+<span class="font-label-xs text-label-xs text-text-caption uppercase">MTTR (24H)</span>
+<span class="font-code-lg text-code-lg text-text-primary mt-0.5">11.4 mins</span>
+<span class="font-code-sm text-code-sm text-status-operational mt-0.5 flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[13px]">check</span> -2.1m target
+        </span>
+</div>
+</div>
+</section>
+<!-- Fleet Status Row -->
+<section class="grid grid-cols-3 gap-space-sm">
+<!-- Operational -->
+<div class="bg-status-operational-bg rounded-xl p-space-md flex flex-col items-center text-center shadow-sm">
+<div class="flex items-center gap-1.5 mb-1">
+<span class="w-2 h-2 rounded-full bg-status-operational"></span>
+<span class="font-code-sm text-code-sm text-text-secondary uppercase">Active</span>
+</div>
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-status-operational">24</span>
+<span class="font-label-xs text-label-xs text-text-secondary mt-0.5">Operational</span>
+</div>
+<!-- Outage -->
+<div class="bg-status-outage-bg rounded-xl p-space-md flex flex-col items-center text-center shadow-sm">
+<div class="flex items-center gap-1.5 mb-1">
+<span class="w-2 h-2 rounded-full bg-status-outage animate-ping"></span>
+<span class="font-code-sm text-code-sm text-secondary uppercase">Down</span>
+</div>
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-secondary">1</span>
+<span class="font-label-xs text-label-xs text-text-secondary mt-0.5">Outage</span>
+</div>
+<!-- Degraded -->
+<div class="bg-status-degraded-bg rounded-xl p-space-md flex flex-col items-center text-center shadow-sm">
+<div class="flex items-center gap-1.5 mb-1">
+<span class="w-2 h-2 rounded-full bg-status-degraded"></span>
+<span class="font-code-sm text-code-sm text-text-secondary uppercase">Warn</span>
+</div>
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-status-degraded">2</span>
+<span class="font-label-xs text-label-xs text-text-secondary mt-0.5">Degraded</span>
+</div>
+</section>
+<!-- Latency Performance Chart Card -->
+<section class="bg-canvas-bg rounded-xl p-space-lg shadow-sm flex flex-col">
+<!-- Card Header with Time Chips -->
+<div class="flex items-start justify-between gap-2 mb-space-sm">
+<div>
+<div class="flex items-center gap-1.5">
+<span class="font-label-xs text-label-xs text-text-caption uppercase tracking-wider">Edge Response</span>
+<span class="bg-mint-badge-tint text-accent-teal-dark font-label-xs text-label-xs px-1.5 rounded">p90</span>
+</div>
+<div class="flex items-baseline gap-2 mt-1">
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-text-primary font-bold">42 <span class="font-code-sm text-code-sm text-text-secondary">ms</span></span>
+<span class="font-code-sm text-code-sm text-status-operational bg-status-operational-bg px-1.5 py-0.5 rounded flex items-center">
+            -8ms (-16%)
+          </span>
+</div>
+</div>
+<!-- Time Interval Pills -->
+<div class="flex items-center bg-surface-subtle p-0.5 rounded-lg">
+<button class="latency-toggle px-2.5 py-1 rounded font-code-sm text-code-sm bg-primary text-on-primary transition-colors" data-range="24h">24H</button>
+<button class="latency-toggle px-2.5 py-1 rounded font-code-sm text-code-sm text-text-secondary transition-colors" data-range="7d">7D</button>
+<button class="latency-toggle px-2.5 py-1 rounded font-code-sm text-code-sm text-text-secondary transition-colors" data-range="30d">30D</button>
+</div>
+</div>
+<!-- Latency SVG Sparkline / Area Chart -->
+<div class="relative w-full h-36 my-space-xs">
+<svg class="w-full h-full overflow-visible" preserveaspectratio="none" viewbox="0 0 320 120">
+<defs>
+<lineargradient id="latencyGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#00685f" stop-opacity="0.28"></stop>
+<stop offset="85%" stop-color="#00685f" stop-opacity="0.0"></stop>
+</lineargradient>
+</defs>
+<!-- Subtle Horizontal Baseline Grids -->
+<line stroke="#f1f5f9" stroke-dasharray="2 2" stroke-width="1" x1="0" x2="320" y1="20" y2="20"></line>
+<line stroke="#f1f5f9" stroke-dasharray="2 2" stroke-width="1" x1="0" x2="320" y1="65" y2="65"></line>
+<line stroke="#f1f5f9" stroke-dasharray="2 2" stroke-width="1" x1="0" x2="320" y1="105" y2="105"></line>
+<!-- Area Fill -->
+<path d="M0,85 C40,75 70,95 105,60 C140,25 180,70 215,50 C250,30 280,68 320,40 L320,120 L0,120 Z" fill="url(#latencyGradient)" id="chart-area"></path>
+<!-- Line Stroke -->
+<path d="M0,85 C40,75 70,95 105,60 C140,25 180,70 215,50 C250,30 280,68 320,40" fill="none" id="chart-path" stroke="#00685f" stroke-linecap="round" stroke-width="2.5"></path>
+<!-- Active Focus Point (42ms at us-east-1) -->
+<circle class="animate-pulse" cx="320" cy="40" fill="#00685f" r="5"></circle>
+<circle cx="320" cy="40" fill="#00685f" fill-opacity="0.2" r="9"></circle>
+</svg>
+<!-- Interactive Floating Tooltip Pill -->
+<div class="absolute right-0 top-1 bg-on-surface text-on-primary py-1 px-2.5 rounded shadow-lg flex items-center gap-1.5 pointer-events-none">
+<span class="w-1.5 h-1.5 rounded-full bg-mint-badge-tint"></span>
+<span class="font-code-sm text-[10px] tracking-tight">Now: 42ms · us-east-1</span>
+</div>
+</div>
+<!-- Detailed Latency Percentiles Footer -->
+<div class="grid grid-cols-4 gap-1 pt-space-sm mt-space-xs bg-surface-subtle/50 rounded-lg p-2 text-center">
+<div>
+<span class="font-label-xs text-label-xs text-text-caption">MIN</span>
+<div class="font-code-sm text-code-sm text-text-primary mt-0.5">28ms</div>
+</div>
+<div>
+<span class="font-label-xs text-label-xs text-text-caption">AVG</span>
+<div class="font-code-sm text-code-sm text-text-primary mt-0.5">42ms</div>
+</div>
+<div>
+<span class="font-label-xs text-label-xs text-text-caption">P95</span>
+<div class="font-code-sm text-code-sm text-status-degraded mt-0.5">64ms</div>
+</div>
+<div>
+<span class="font-label-xs text-label-xs text-text-caption">P99</span>
+<div class="font-code-sm text-code-sm text-secondary mt-0.5">89ms</div>
+</div>
+</div>
+</section>
+<!-- Live Edge Telemetry Heartbeat Feed -->
+<section class="bg-canvas-bg rounded-xl p-space-lg shadow-sm flex flex-col space-y-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">sensors</span>
+<h3 class="font-title-sm text-title-sm text-text-primary">Live Edge Heartbeats</h3>
+</div>
+<span class="font-code-sm text-code-sm text-text-caption">Polling 5s</span>
+</div>
+<!-- Endpoint Streams -->
+<div class="space-y-space-xs">
+<!-- Endpoint Row 1: Degraded/Down -->
+<div class="flex items-center justify-between p-space-sm rounded-lg bg-status-outage-bg/70 hover:bg-status-outage-bg transition-colors">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-2 h-2 rounded-full bg-status-outage flex-shrink-0 animate-ping"></div>
+<div class="min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-code-sm text-code-sm text-text-primary font-semibold truncate">api.payments.io</span>
+<span class="bg-surface-subtle text-text-secondary font-label-xs text-label-xs px-1 rounded">IAD</span>
+</div>
+<span class="font-code-sm text-[10px] text-secondary">TIMEOUT · upstream error</span>
+</div>
+</div>
+<div class="flex items-center gap-2 flex-shrink-0">
+<span class="font-code-sm text-code-sm text-secondary font-bold">-- ms</span>
+<span class="bg-secondary text-on-secondary font-code-sm text-[10px] px-2 py-0.5 rounded font-bold">502 BAD</span>
+</div>
+</div>
+<!-- Endpoint Row 2: Operational -->
+<div class="flex items-center justify-between p-space-sm rounded-lg bg-surface-subtle hover:bg-surface-container transition-colors">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-2 h-2 rounded-full bg-status-operational flex-shrink-0"></div>
+<div class="min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-code-sm text-code-sm text-text-primary font-semibold truncate">auth.cloudapp.net</span>
+<span class="bg-surface-container text-text-secondary font-label-xs text-label-xs px-1 rounded">FRA</span>
+</div>
+<span class="font-code-sm text-[10px] text-text-caption">OAuth2 /token · TLS 1.3</span>
+</div>
+</div>
+<div class="flex items-center gap-2 flex-shrink-0">
+<span class="font-code-sm text-code-sm text-text-secondary">28 ms</span>
+<span class="bg-status-operational-bg text-status-operational font-code-sm text-[10px] px-2 py-0.5 rounded font-bold">200 OK</span>
+</div>
+</div>
+<!-- Endpoint Row 3: Operational -->
+<div class="flex items-center justify-between p-space-sm rounded-lg bg-surface-subtle hover:bg-surface-container transition-colors">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-2 h-2 rounded-full bg-status-operational flex-shrink-0"></div>
+<div class="min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-code-sm text-code-sm text-text-primary font-semibold truncate">telemetry-collector.io</span>
+<span class="bg-surface-container text-text-secondary font-label-xs text-label-xs px-1 rounded">NRT</span>
+</div>
+<span class="font-code-sm text-[10px] text-text-caption">gRPC streams · ack 100%</span>
+</div>
+</div>
+<div class="flex items-center gap-2 flex-shrink-0">
+<span class="font-code-sm text-code-sm text-text-secondary">36 ms</span>
+<span class="bg-status-operational-bg text-status-operational font-code-sm text-[10px] px-2 py-0.5 rounded font-bold">200 OK</span>
+</div>
+</div>
+<!-- Endpoint Row 4: Operational -->
+<div class="flex items-center justify-between p-space-sm rounded-lg bg-surface-subtle hover:bg-surface-container transition-colors">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-2 h-2 rounded-full bg-status-operational flex-shrink-0"></div>
+<div class="min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-code-sm text-code-sm text-text-primary font-semibold truncate">cdn-static.assets.sre</span>
+<span class="bg-surface-container text-text-secondary font-label-xs text-label-xs px-1 rounded">SIN</span>
+</div>
+<span class="font-code-sm text-[10px] text-text-caption">Anycast edge · HIT 98%</span>
+</div>
+</div>
+<div class="flex items-center gap-2 flex-shrink-0">
+<span class="font-code-sm text-code-sm text-text-secondary">19 ms</span>
+<span class="bg-status-operational-bg text-status-operational font-code-sm text-[10px] px-2 py-0.5 rounded font-bold">200 OK</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+<script>
+  // Simple micro-interactions for Executive Dashboard
+  document.querySelectorAll('.latency-toggle').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.latency-toggle').forEach(b => {
+        b.className = 'latency-toggle px-2.5 py-1 rounded font-code-sm text-code-sm text-text-secondary transition-colors';
+      });
+      this.className = 'latency-toggle px-2.5 py-1 rounded font-code-sm text-code-sm bg-primary text-on-primary transition-colors';
+    });
+  });
+
+  const ackBtn = document.getElementById('ack-btn');
+  if (ackBtn) {
+    ackBtn.addEventListener('click', function() {
+      this.textContent = 'Acknowledged';
+      this.classList.add('bg-status-operational-bg', 'text-status-operational');
+    });
+  }
+
+  const triageBtn = document.getElementById('triage-btn');
+  if (triageBtn) {
+    triageBtn.addEventListener('click', function() {
+      this.innerHTML = '<span class="material-symbols-outlined text-[16px] animate-spin">refresh</span><span>Triaging...</span>';
+      setTimeout(() => {
+        this.innerHTML = '<span>Logs Ready</span><span class="material-symbols-outlined text-[16px]">check</span>';
+      }, 900);
+    });
+  }
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-canvas-bg/95 backdrop-blur-xl shadow-[0_-2px_12px_rgba(0,0,0,0.05)]" data-active-classes="bg-mint-badge-tint text-primary font-title-sm"><div class="flex justify-around items-center h-16 px-space-xs"><a aria-current="page" class="flex flex-col items-center justify-center min-w-[64px] h-12 px-2 rounded-xl transition-all bg-mint-badge-tint text-primary font-title-sm" data-path="dashboard" href="#"><span class="material-symbols-outlined text-[22px]">speed</span><span class="font-code-sm text-[10px] mt-0.5">Dashboard</span></a><a class="flex flex-col items-center justify-center min-w-[64px] h-12 px-2 rounded-xl text-text-secondary transition-all" data-path="services" href="#"><span class="material-symbols-outlined text-[22px]">dns</span><span class="font-code-sm text-[10px] mt-0.5">Services</span></a><a class="relative flex flex-col items-center justify-center min-w-[64px] h-12 px-2 rounded-xl text-text-secondary transition-all" data-path="incidents" href="#"><div class="relative flex items-center justify-center"><span class="material-symbols-outlined text-[22px]">warning</span><span class="absolute -top-1 -right-2.5 min-w-[16px] h-4 px-1 rounded-full bg-secondary text-on-secondary font-code-sm text-[9px] flex items-center justify-center leading-none font-bold">1</span></div><span class="font-code-sm text-[10px] mt-0.5">Incidents</span></a><a class="flex flex-col items-center justify-center min-w-[64px] h-12 px-2 rounded-xl text-text-secondary transition-all" data-path="inspection-detail" href="#"><span class="material-symbols-outlined text-[22px]">verified_user</span><span class="font-code-sm text-[10px] mt-0.5">Inspect</span></a></div></nav></body></html>
