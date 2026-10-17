@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_typography.dart';
 import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/widgets/dynamic_island_toast.dart';
 import '../cubit/services_cubit.dart';
 import '../cubit/services_state.dart';
 import '../widgets/service_search_bar.dart';
@@ -122,12 +123,10 @@ class ServicesScreen extends StatelessWidget {
                             },
                             onQuickPing: () {
                               context.read<ServicesCubit>().quickPing(service.id);
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text('Quick Ping dikirim ke ${service.name}'),
-                                  duration: const Duration(seconds: 1),
-                                  backgroundColor: AppColors.primary,
-                                ),
+                              DynamicIslandToast.info(
+                                context,
+                                'Ping sinyal telemetri dikirim ke ${service.name}',
+                                title: 'QUICK PING DISPATCHED',
                               );
                             },
                           );

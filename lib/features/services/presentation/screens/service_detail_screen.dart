@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_typography.dart';
 import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/widgets/dynamic_island_toast.dart';
 import '../../domain/entities/service_site_entity.dart';
 import '../widgets/uptime_heatmap_grid.dart';
 import '../widgets/latency_waterfall_card.dart';
@@ -23,11 +24,10 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
     await Future.delayed(const Duration(milliseconds: 1200));
     if (mounted) {
       setState(() => _isChecking = false);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Health Check selesai dieksekusi. Data metrik diperbarui.'),
-          backgroundColor: AppColors.statusOperational,
-        ),
+      DynamicIslandToast.success(
+        context,
+        'Health Check selesai dieksekusi. Data metrik diperbarui.',
+        title: 'HEALTH CHECK OK',
       );
     }
   }

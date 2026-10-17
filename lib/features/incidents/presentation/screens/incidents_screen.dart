@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/widgets/dynamic_island_toast.dart';
 import '../cubit/incidents_cubit.dart';
 import '../cubit/incidents_state.dart';
 import '../widgets/incident_pulse_ribbon.dart';
@@ -121,6 +122,11 @@ class IncidentsScreen extends StatelessWidget {
                                         incident.id,
                                         newStatus,
                                       );
+                                  DynamicIslandToast.success(
+                                    context,
+                                    'Status insiden ${incident.incidentCode} diubah ke $newStatus',
+                                    title: 'STATUS INCIDENT UPDATED',
+                                  );
                                 },
                               ),
                             ],
