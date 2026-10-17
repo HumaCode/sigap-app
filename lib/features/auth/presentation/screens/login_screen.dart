@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../core/constants/api_key.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_typography.dart';
-import '../../../../core/theme/app_spacing.dart';
 import '../cubit/auth_cubit.dart';
 import '../cubit/auth_state.dart';
+import '../widgets/auth_background.dart';
+import '../widgets/auth_biometric_card.dart';
+import '../widgets/auth_header.dart';
+import '../widgets/auth_input_field.dart';
+import '../widgets/auth_server_status_badge.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -30,116 +33,176 @@ class _LoginScreenState extends State<LoginScreen> {
   void _onLoginPressed() {
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
-    if (email.isNotEmpty && password.isNotEmpty) {
-      context.read<AuthCubit>().login(
-            email,
-            password,
-            enableBiometric: _enableBiometric,
-          );
+
+    if (email.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            children: [
+              const Icon(Icons.info_outline, color: Colors.white, size: 20),
+              const SizedBox(width: 10),
+              Text(
+                'Mohon lengkapi email dan password',
+                style: AppTypography.bodySm.copyWith(color: Colors.white),
+              ),
+            ],
+          ),
+          backgroundColor: AppColors.statusDegraded,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        ),
+      );
+      return;
     }
+
+    context.read<AuthCubit>().login(
+          email,
+          password,
+          enableBiometric: _enableBiometric,
+        );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.canvasBg,
-      body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.marginMobile),
-            child: BlocConsumer<AuthCubit, AuthState>(
-              listener: (context, state) {
-                if (state is AuthError) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(state.message),
-                      backgroundColor: AppColors.statusOutage,
-                    ),
-                  );
-                }
-              },
-              builder: (context, state) {
-                final isLoading = state is AuthLoading;
-                final canUseBiometric = state is Unauthenticated && state.canUseBiometric;
-
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    // Header Logo & Branding
-                    Center(
-                      child: Container(
-                        width: 64,
-                        height: 64,
-                        decoration: BoxDecoration(
-                          color: AppColors.mintBadgeTint,
-                          borderRadius: AppSpacing.roundedXl,
-                        ),
-                        child: const Icon(
-                          Icons.radar_rounded,
-                          size: 36,
-                          color: AppColors.primary,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      'SIGAP Mobile',
-                      textAlign: TextAlign.center,
-                      style: AppTypography.headlineXl.copyWith(
-                        color: AppColors.primary,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'Sistem Informasi Gangguan & Analisis Performa',
-                      textAlign: TextAlign.center,
-                      style: AppTypography.bodySm.copyWith(
-                        color: AppColors.textSecondary,
-                      ),
-                    ),
-                    const SizedBox(height: 36),
-
-                    // Card Form Container
-                    Container(
-                      padding: const EdgeInsets.all(AppSpacing.spaceLg),
-                      decoration: BoxDecoration(
-                        color: AppColors.surfaceSubtle,
-                        borderRadius: AppSpacing.roundedXl,
-                        border: Border.all(color: AppColors.surfaceBorder),
-                        boxShadow: AppSpacing.cardShadow,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Text('Login Kredensial', style: AppTypography.titleSm),
-                          const SizedBox(height: 16),
-
-                          // Email
-                          TextField(
-                            controller: _emailController,
-                            keyboardType: TextInputType.emailAddress,
-                            style: AppTypography.bodyMd.copyWith(color: AppColors.textPrimary),
-                            decoration: const InputDecoration(
-                              labelText: 'Email / Username',
-                              prefixIcon: Icon(Icons.email_outlined, size: 20),
+      body: AuthBackground(
+        child: SafeArea(
+          child: Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+              child: BlocConsumer<AuthCubit, AuthState>(
+                listener: (context, state) {
+                  if (state is AuthError) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Row(
+                          children: [
+                            const Icon(Icons.error_outline, color: Colors.white, size: 20),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: Text(
+                                state.message,
+                                style: AppTypography.bodySm.copyWith(color: Colors.white),
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 14),
+                          ],
+                        ),
+                        backgroundColor: AppColors.statusOutage,
+                        behavior: SnackBarBehavior.floating,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    );
+                  }
+                },
+                builder: (context, state) {
+                  final isLoading = state is AuthLoading;
+                  final canUseBiometric = state is Unauthenticated && state.canUseBiometric;
 
-                          // Password
-                          TextField(
-                            controller: _passwordController,
-                            obscureText: _obscurePassword,
-                            style: AppTypography.bodyMd.copyWith(color: AppColors.textPrimary),
-                            decoration: InputDecoration(
-                              labelText: 'Password',
-                              prefixIcon: const Icon(Icons.lock_outline, size: 20),
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // Header Section (Status Pill, Glowing Logo, Title)
+                      const AuthHeader(),
+                      const SizedBox(height: 28),
+
+                      // Floating Modern Login Card
+                      Container(
+                        padding: const EdgeInsets.all(22),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.94),
+                          borderRadius: BorderRadius.circular(24),
+                          border: Border.all(
+                            color: Colors.white,
+                            width: 1.5,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(0xFF0F172A).withValues(alpha: 0.06),
+                              blurRadius: 28,
+                              offset: const Offset(0, 12),
+                            ),
+                            BoxShadow(
+                              color: AppColors.primary.withValues(alpha: 0.04),
+                              blurRadius: 16,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            // Card Header Row
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Akses Kredensial',
+                                  style: AppTypography.titleSm.copyWith(
+                                    fontWeight: FontWeight.w700,
+                                    color: const Color(0xFF0F172A),
+                                  ),
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 4,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.mintBadgeTint.withValues(alpha: 0.6),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      const Icon(
+                                        Icons.shield_outlined,
+                                        size: 13,
+                                        color: AppColors.primary,
+                                      ),
+                                      const SizedBox(width: 4),
+                                      Text(
+                                        'SECURE',
+                                        style: AppTypography.labelXs.copyWith(
+                                          color: AppColors.primary,
+                                          fontWeight: FontWeight.w800,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 18),
+
+                            // Email / Username Input
+                            AuthInputField(
+                              controller: _emailController,
+                              label: 'Email / Username',
+                              hint: 'Masukkan email atau username',
+                              prefixIcon: Icons.alternate_email_rounded,
+                              keyboardType: TextInputType.emailAddress,
+                              textInputAction: TextInputAction.next,
+                            ),
+                            const SizedBox(height: 14),
+
+                            // Password Input
+                            AuthInputField(
+                              controller: _passwordController,
+                              label: 'Password',
+                              hint: 'Masukkan password kredensial',
+                              prefixIcon: Icons.lock_outline_rounded,
+                              obscureText: _obscurePassword,
+                              textInputAction: TextInputAction.done,
+                              onSubmitted: (_) => _onLoginPressed(),
                               suffixIcon: IconButton(
                                 icon: Icon(
-                                  _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                                  _obscurePassword
+                                      ? Icons.visibility_off_outlined
+                                      : Icons.visibility_outlined,
                                   size: 20,
+                                  color: const Color(0xFF64748B),
                                 ),
                                 onPressed: () {
                                   setState(() {
@@ -148,97 +211,110 @@ class _LoginScreenState extends State<LoginScreen> {
                                 },
                               ),
                             ),
-                          ),
-                          const SizedBox(height: 12),
+                            const SizedBox(height: 16),
 
-                          // Biometric Switch
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Aktifkan Biometrik',
-                                style: AppTypography.bodySm,
-                              ),
-                              Switch(
-                                value: _enableBiometric,
-                                activeThumbColor: AppColors.primary,
-                                onChanged: (val) {
-                                  setState(() {
-                                    _enableBiometric = val;
-                                  });
-                                },
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 16),
-
-                          // Login Button
-                          ElevatedButton(
-                            onPressed: isLoading ? null : _onLoginPressed,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.primary,
-                              foregroundColor: AppColors.onPrimary,
-                              padding: const EdgeInsets.symmetric(vertical: 14),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: AppSpacing.roundedMd,
-                              ),
-                              elevation: 0,
-                            ),
-                            child: isLoading
-                                ? const SizedBox(
-                                    height: 20,
-                                    width: 20,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                      color: Colors.white,
-                                    ),
-                                  )
-                                : Text(
-                                    'Masuk ke SIGAP SRE',
-                                    style: AppTypography.titleSm.copyWith(color: Colors.white),
-                                  ),
-                          ),
-
-                          if (canUseBiometric) ...[
-                            const SizedBox(height: 12),
-                            OutlinedButton.icon(
-                              onPressed: () {
+                            // Biometric Switch & Instant Login Button
+                            AuthBiometricSection(
+                              enableBiometric: _enableBiometric,
+                              onToggle: (val) {
+                                setState(() {
+                                  _enableBiometric = val;
+                                });
+                              },
+                              canUseBiometric: canUseBiometric,
+                              onBiometricLogin: () {
                                 context.read<AuthCubit>().loginWithBiometrics();
                               },
-                              icon: const Icon(Icons.fingerprint, color: AppColors.primary),
-                              label: Text(
-                                'Masuk dengan Biometrik',
-                                style: AppTypography.codeSm.copyWith(
-                                  color: AppColors.primary,
-                                  fontWeight: FontWeight.w700,
+                            ),
+                            const SizedBox(height: 20),
+
+                            // Primary Modern Gradient Action Button
+                            Container(
+                              decoration: BoxDecoration(
+                                gradient: const LinearGradient(
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                  colors: [
+                                    Color(0xFF00685F),
+                                    Color(0xFF008378),
+                                    Color(0xFF0D9488),
+                                  ],
                                 ),
+                                borderRadius: BorderRadius.circular(16),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: AppColors.primary.withValues(alpha: 0.35),
+                                    blurRadius: 18,
+                                    offset: const Offset(0, 6),
+                                  ),
+                                ],
                               ),
-                              style: OutlinedButton.styleFrom(
-                                side: const BorderSide(color: AppColors.primary),
-                                padding: const EdgeInsets.symmetric(vertical: 12),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: AppSpacing.roundedMd,
+                              child: Material(
+                                color: Colors.transparent,
+                                child: InkWell(
+                                  onTap: isLoading ? null : _onLoginPressed,
+                                  borderRadius: BorderRadius.circular(16),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(vertical: 15),
+                                    child: Center(
+                                      child: isLoading
+                                          ? const Row(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                SizedBox(
+                                                  width: 18,
+                                                  height: 18,
+                                                  child: CircularProgressIndicator(
+                                                    strokeWidth: 2.2,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                                SizedBox(width: 12),
+                                                Text(
+                                                  'Memverifikasi Kredensial...',
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                                          : Row(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  'Masuk ke SIGAP SRE',
+                                                  style: AppTypography.titleSm.copyWith(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.w700,
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 8),
+                                                const Icon(
+                                                  Icons.arrow_forward_rounded,
+                                                  size: 18,
+                                                  color: Colors.white,
+                                                ),
+                                              ],
+                                            ),
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
                           ],
-                        ],
-                      ),
-                    ),
-
-                    const SizedBox(height: 24),
-                    Center(
-                      child: Text(
-                        'Base API: ${ApiKey.baseUrl}\nLaravel Octane / Local Dev Server',
-                        textAlign: TextAlign.center,
-                        style: AppTypography.labelXs.copyWith(
-                          color: AppColors.textCaption,
                         ),
                       ),
-                    ),
-                  ],
-                );
-              },
+
+                      const SizedBox(height: 24),
+
+                      // Server Status & API Endpoint Capsule
+                      const AuthServerStatusBadge(),
+                    ],
+                  );
+                },
+              ),
             ),
           ),
         ),
