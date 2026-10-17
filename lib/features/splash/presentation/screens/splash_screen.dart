@@ -7,7 +7,6 @@ import '../../../auth/presentation/cubit/auth_cubit.dart';
 import '../../../auth/presentation/cubit/auth_state.dart';
 import '../../../auth/presentation/screens/login_screen.dart';
 import '../../../navigation/presentation/screens/main_navigation_shell.dart';
-import '../widgets/splash_countdown_bar.dart';
 import '../widgets/splash_radar_pulse.dart';
 import '../widgets/splash_telemetry_terminal.dart';
 
@@ -52,7 +51,7 @@ class _SplashScreenState extends State<SplashScreen>
     // Staggered entrance animation
     _entranceController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1400),
+      duration: const Duration(milliseconds: 1200),
     );
 
     _logoScale = CurvedAnimation(
@@ -66,7 +65,7 @@ class _SplashScreenState extends State<SplashScreen>
     );
 
     _textSlide = Tween<Offset>(
-      begin: const Offset(0, 0.25),
+      begin: const Offset(0, 0.2),
       end: Offset.zero,
     ).animate(
       CurvedAnimation(
@@ -80,7 +79,6 @@ class _SplashScreenState extends State<SplashScreen>
       curve: const Interval(0.35, 0.8, curve: Curves.easeIn),
     );
 
-    // Start entrance and 5s timer
     _entranceController.forward();
     _timerController.forward();
 
@@ -139,7 +137,6 @@ class _SplashScreenState extends State<SplashScreen>
 
   void _handleInteractiveTap() {
     HapticFeedback.lightImpact();
-    // Provide visual feedback by briefly accelerating pulse
     _radarController.forward(from: 0.0);
   }
 
@@ -155,10 +152,10 @@ class _SplashScreenState extends State<SplashScreen>
         child: Stack(
           alignment: Alignment.center,
           children: [
-            // Ambient Glowing Background Mesh
+            // Ambient Glowing Radial Blobs
             Positioned(
-              top: -size.width * 0.2,
-              right: -size.width * 0.15,
+              top: -size.width * 0.25,
+              right: -size.width * 0.2,
               child: Container(
                 width: size.width * 0.85,
                 height: size.width * 0.85,
@@ -192,167 +189,190 @@ class _SplashScreenState extends State<SplashScreen>
               ),
             ),
 
-            // Continuous Radar Waves Behind Logo
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 120),
-                child: SplashRadarPulse(
-                  animation: _radarController,
-                  size: size.width * 0.75,
-                ),
-              ),
-            ),
-
-            // Foreground Staggered Content
+            // Foreground Unified Layout
             SafeArea(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Spacer(flex: 2),
-
-                  // Brand Hero Logo
-                  FadeTransition(
-                    opacity: _logoFade,
-                    child: ScaleTransition(
-                      scale: _logoScale,
-                      child: Container(
-                        width: 96,
-                        height: 96,
-                        decoration: BoxDecoration(
-                          gradient: const LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: [
-                              Color(0xFFE6FFFA),
-                              Color(0xFFCCFBF1),
-                            ],
-                          ),
-                          borderRadius: BorderRadius.circular(28),
-                          border: Border.all(
-                            color: AppColors.accentTeal.withValues(alpha: 0.4),
-                            width: 2,
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: AppColors.primary.withValues(alpha: 0.16),
-                              blurRadius: 28,
-                              offset: const Offset(0, 10),
-                            ),
-                            BoxShadow(
-                              color: AppColors.accentTeal.withValues(alpha: 0.25),
-                              blurRadius: 14,
-                              offset: const Offset(0, 2),
-                            ),
-                          ],
-                        ),
+              child: Center(
+                child: SingleChildScrollView(
+                  physics: const ClampingScrollPhysics(),
+                  padding: const EdgeInsets.symmetric(vertical: 24),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // Concentric Radar & Hero Logo Stack
+                      SizedBox(
+                        width: 220,
+                        height: 220,
                         child: Stack(
                           alignment: Alignment.center,
                           children: [
-                            Container(
-                              width: 60,
-                              height: 60,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.white.withValues(alpha: 0.8),
-                              ),
+                            // Concentric Pulsing Ripples (Centered with Logo)
+                            SplashRadarPulse(
+                              animation: _radarController,
+                              size: 220,
                             ),
-                            const Icon(
-                              Icons.radar_rounded,
-                              size: 48,
-                              color: AppColors.primary,
+
+                            // Hero Brand Logo
+                            FadeTransition(
+                              opacity: _logoFade,
+                              child: ScaleTransition(
+                                scale: _logoScale,
+                                child: Container(
+                                  width: 84,
+                                  height: 84,
+                                  decoration: BoxDecoration(
+                                    gradient: const LinearGradient(
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                      colors: [
+                                        Color(0xFFE6FFFA),
+                                        Color(0xFFCCFBF1),
+                                      ],
+                                    ),
+                                    borderRadius: BorderRadius.circular(24),
+                                    border: Border.all(
+                                      color: AppColors.accentTeal.withValues(alpha: 0.4),
+                                      width: 2,
+                                    ),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: AppColors.primary.withValues(alpha: 0.16),
+                                        blurRadius: 24,
+                                        offset: const Offset(0, 8),
+                                      ),
+                                      BoxShadow(
+                                        color: AppColors.accentTeal.withValues(alpha: 0.25),
+                                        blurRadius: 12,
+                                        offset: const Offset(0, 2),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Stack(
+                                    alignment: Alignment.center,
+                                    children: [
+                                      Container(
+                                        width: 52,
+                                        height: 52,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.white.withValues(alpha: 0.8),
+                                        ),
+                                      ),
+                                      const Icon(
+                                        Icons.radar_rounded,
+                                        size: 42,
+                                        color: AppColors.primary,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
                             ),
                           ],
                         ),
                       ),
-                    ),
-                  ),
-                  const SizedBox(height: 24),
+                      const SizedBox(height: 8),
 
-                  // Title and Subtitle
-                  SlideTransition(
-                    position: _textSlide,
-                    child: FadeTransition(
-                      opacity: _textFade,
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                      // Title & Subtitle
+                      SlideTransition(
+                        position: _textSlide,
+                        child: FadeTransition(
+                          opacity: _textFade,
+                          child: Column(
                             children: [
-                              Text(
-                                'SIGAP',
-                                style: AppTypography.headlineXl.copyWith(
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.w900,
-                                  letterSpacing: -0.6,
-                                  color: const Color(0xFF0F172A),
-                                ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'SIGAP',
+                                    style: AppTypography.headlineXl.copyWith(
+                                      fontSize: 28,
+                                      fontWeight: FontWeight.w900,
+                                      letterSpacing: -0.5,
+                                      color: const Color(0xFF0F172A),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 9,
+                                      vertical: 3.5,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      gradient: const LinearGradient(
+                                        colors: [
+                                          AppColors.primary,
+                                          AppColors.primaryContainer,
+                                        ],
+                                      ),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Text(
+                                      'SRE MOBILE',
+                                      style: AppTypography.codeSm.copyWith(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w800,
+                                        letterSpacing: 0.8,
+                                        fontSize: 11,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                              const SizedBox(width: 8),
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                  vertical: 4,
-                                ),
-                                decoration: BoxDecoration(
-                                  gradient: const LinearGradient(
-                                    colors: [
-                                      AppColors.primary,
-                                      AppColors.primaryContainer,
-                                    ],
-                                  ),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Text(
-                                  'SRE MOBILE',
-                                  style: AppTypography.codeSm.copyWith(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w800,
-                                    letterSpacing: 0.8,
-                                  ),
+                              const SizedBox(height: 6),
+                              Text(
+                                'Sistem Informasi Gangguan & Analisis Performa',
+                                textAlign: TextAlign.center,
+                                style: AppTypography.bodySm.copyWith(
+                                  color: AppColors.textSecondary,
+                                  fontWeight: FontWeight.w500,
                                 ),
                               ),
                             ],
                           ),
-                          const SizedBox(height: 8),
+                        ),
+                      ),
+
+                      const SizedBox(height: 28),
+
+                      // Telemetry Terminal Card with Integrated Progress & Actions
+                      AnimatedBuilder(
+                        animation: _timerController,
+                        builder: (context, _) {
+                          return SplashTelemetryTerminal(
+                            progress: _timerController.value,
+                            onSkip: _navigateToTarget,
+                          );
+                        },
+                      ),
+
+                      const SizedBox(height: 20),
+
+                      // Subtle Telemetry Footnote
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 5,
+                            height: 5,
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: AppColors.statusOperational,
+                            ),
+                          ),
+                          const SizedBox(width: 6),
                           Text(
-                            'Sistem Informasi Gangguan & Analisis Performa',
-                            textAlign: TextAlign.center,
-                            style: AppTypography.bodySm.copyWith(
-                              color: AppColors.textSecondary,
-                              fontWeight: FontWeight.w500,
+                            'LARAVEL OCTANE · SRE PLATFORM v1.0',
+                            style: AppTypography.labelXs.copyWith(
+                              color: const Color(0xFF94A3B8),
+                              fontWeight: FontWeight.w600,
+                              letterSpacing: 0.5,
                             ),
                           ),
                         ],
                       ),
-                    ),
+                    ],
                   ),
-
-                  const Spacer(flex: 1),
-
-                  // Telemetry Boot Sequence Terminal Box
-                  AnimatedBuilder(
-                    animation: _timerController,
-                    builder: (context, _) {
-                      return SplashTelemetryTerminal(
-                        progress: _timerController.value,
-                      );
-                    },
-                  ),
-
-                  const Spacer(flex: 2),
-
-                  // 5-Second Animated Progress Bar and Skip Button
-                  AnimatedBuilder(
-                    animation: _timerController,
-                    builder: (context, _) {
-                      return SplashCountdownBar(
-                        progress: _timerController.value,
-                        onSkip: _navigateToTarget,
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                ],
+                ),
               ),
             ),
           ],

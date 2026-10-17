@@ -44,8 +44,8 @@ class _RadarPulsePainter extends CustomPainter {
     // Draw 3 wave rings offset by phase
     for (int i = 0; i < 3; i++) {
       final ringProgress = (progress + (i * 0.33)) % 1.0;
-      final radius = 40.0 + (maxRadius - 40.0) * ringProgress;
-      final opacity = (1.0 - ringProgress).clamp(0.0, 1.0) * 0.45;
+      final radius = 42.0 + (maxRadius - 42.0) * ringProgress;
+      final opacity = (1.0 - ringProgress).clamp(0.0, 1.0) * 0.40;
 
       // Outer wave stroke
       final strokePaint = Paint()
