@@ -4,6 +4,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_typography.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/widgets/dynamic_island_toast.dart';
+import '../../../../core/widgets/modern_empty_state.dart';
 import '../../data/models/inspect_model.dart';
 import '../cubit/services_cubit.dart';
 import '../widgets/uptime_heatmap_grid.dart';
@@ -109,78 +110,13 @@ class _InspectScreenState extends State<InspectScreen> {
             child: Column(
               children: [
                 const SizedBox(height: 60),
-                Center(
-                  child: Container(
-                    padding: const EdgeInsets.all(28),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(24),
-                      border: Border.all(color: const Color(0xFFE2E8F0)),
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(0xFF0F172A).withValues(alpha: 0.04),
-                          blurRadius: 20,
-                          offset: const Offset(0, 8),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Container(
-                          width: 68,
-                          height: 68,
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFF0FDF4),
-                            shape: BoxShape.circle,
-                            border: Border.all(color: const Color(0xFFBBF7D0), width: 1.5),
-                          ),
-                          child: const Icon(
-                            Icons.analytics_outlined,
-                            color: Color(0xFF16A34A),
-                            size: 34,
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        Text(
-                          'BELUM ADA DATA INSPEKSI',
-                          style: AppTypography.titleSm.copyWith(
-                            color: const Color(0xFF0F172A),
-                            fontWeight: FontWeight.w800,
-                            letterSpacing: 0.5,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 12),
-                          child: Text(
-                            'Data telemetri mendalam belum tersedia karena belum ada situs atau layanan yang didaftarkan pada sistem.\n\nSilakan tambahkan situs pertama Anda di menu Services untuk melihat 30-Day Reliability Heatmap dan rincian latensi (DNS, TLS, TTFB, Transfer).',
-                            textAlign: TextAlign.center,
-                            style: AppTypography.bodySm.copyWith(
-                              color: const Color(0xFF64748B),
-                              fontSize: 12.5,
-                              height: 1.5,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 24),
-                        ElevatedButton.icon(
-                          onPressed: widget.onNavigateToServices,
-                          icon: const Icon(Icons.dns_outlined, size: 18),
-                          label: const Text('Buka Menu Services'),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.primary,
-                            foregroundColor: Colors.white,
-                            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 13),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(14),
-                            ),
-                            elevation: 0,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                ModernEmptyState(
+                  icon: Icons.analytics_outlined,
+                  title: 'BELUM ADA DATA INSPEKSI',
+                  description:
+                      'Data telemetri mendalam belum tersedia karena belum ada situs atau layanan yang didaftarkan pada sistem.\n\nSilakan tambahkan situs pertama Anda di menu Services untuk melihat 30-Day Reliability Heatmap dan rincian latensi telemetri.',
+                  buttonText: 'Buka Menu Services',
+                  onButtonPressed: widget.onNavigateToServices,
                 ),
                 const SizedBox(height: 40),
               ],

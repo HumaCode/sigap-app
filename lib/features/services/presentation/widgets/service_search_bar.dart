@@ -6,11 +6,13 @@ import '../../../../core/theme/app_spacing.dart';
 class ServiceSearchBar extends StatelessWidget {
   final ValueChanged<String> onChanged;
   final TextEditingController? controller;
+  final String? hintText;
 
   const ServiceSearchBar({
     super.key,
     required this.onChanged,
     this.controller,
+    this.hintText,
   });
 
   @override
@@ -28,7 +30,7 @@ class ServiceSearchBar extends StatelessWidget {
         style: AppTypography.bodyMd.copyWith(color: AppColors.textPrimary),
         decoration: InputDecoration(
           isDense: true,
-          hintText: 'Search 27 services or endpoints...',
+          hintText: hintText ?? 'Search services or endpoints...',
           hintStyle: AppTypography.bodyMd.copyWith(color: AppColors.textCaption),
           prefixIcon: const Icon(
             Icons.search_rounded,

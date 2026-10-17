@@ -4,6 +4,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_typography.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/widgets/dynamic_island_toast.dart';
+import '../../../../core/widgets/modern_empty_state.dart';
 import '../cubit/services_cubit.dart';
 import '../cubit/services_state.dart';
 import '../widgets/service_search_bar.dart';
@@ -40,6 +41,9 @@ class ServicesScreen extends StatelessWidget {
                   children: [
                     // Search Ribbon
                     ServiceSearchBar(
+                      hintText: state.allServices.isEmpty
+                          ? 'Cari situs atau endpoint...'
+                          : 'Cari ${state.allServices.length} situs atau endpoint...',
                       onChanged: (query) {
                         context.read<ServicesCubit>().search(query);
                       },
@@ -96,12 +100,26 @@ class ServicesScreen extends StatelessWidget {
 
                     // Service Cards Stack
                     if (services.isEmpty) ...[
-                      const SizedBox(height: 40),
-                      Center(
-                        child: Text(
-                          'Tidak ada layanan yang cocok dengan filter.',
-                          style: AppTypography.bodyMd.copyWith(color: AppColors.textCaption),
-                        ),
+                      ModernEmptyState(
+                        icon: state.searchQuery.isNotEmpty
+                            ? Icons.search_off_rounded
+                            : Icons.dns_outlined,
+                        title: state.searchQuery.isNotEmpty
+                            ? 'Layanan Tidak Ditemukan'
+                            : (state.allServices.isEmpty
+                                ? 'Belum Ada Situs Terdaftar'
+                                : 'Tidak Ada Layanan (${state.activeFilter.toUpperCase()})'),
+                        description: state.searchQuery.isNotEmpty
+                            ? 'Tidak ada endpoint yang cocok dengan kata kunci "${state.searchQuery}". Silakan coba kata kunci lain.'
+                            : (state.allServices.isEmpty
+                                ? 'Belum ada situs yang dipantau pada sistem. Tambahkan situs atau endpoint pertama Anda di database Laravel untuk memulai monitoring uptime.'
+                                : 'Tidak ada situs pada filter ini. Beralih kembali ke filter "All" untuk menampilkan seluruh layanan.'),
+                        buttonText: state.searchQuery.isNotEmpty || state.activeFilter != 'all'
+                            ? 'Reset Filter'
+                            : 'Muat Ulang',
+                        onButtonPressed: () {
+                          context.read<ServicesCubit>().loadServices();
+                        },
                       ),
                     ] else ...[
                       ListView.separated(
