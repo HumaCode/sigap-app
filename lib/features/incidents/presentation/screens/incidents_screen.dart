@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/widgets/dynamic_island_toast.dart';
+import '../../../../core/widgets/modern_loader.dart';
 import '../cubit/incidents_cubit.dart';
 import '../cubit/incidents_state.dart';
 import '../widgets/incident_pulse_ribbon.dart';
@@ -19,8 +20,14 @@ class IncidentsScreen extends StatelessWidget {
       body: BlocBuilder<IncidentsCubit, IncidentsState>(
         builder: (context, state) {
           if (state is IncidentsLoading) {
-            return const Center(
-              child: CircularProgressIndicator(color: AppColors.primary),
+            return const Scaffold(
+              backgroundColor: AppColors.surface,
+              body: Center(
+                child: ModernLoader(
+                  message: 'Sinkronisasi War Room & Insiden...',
+                  subMessage: 'Memeriksa status eskalasi P1/P2/P3',
+                ),
+              ),
             );
           }
 

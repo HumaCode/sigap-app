@@ -5,6 +5,7 @@ import '../../../../core/theme/app_typography.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/widgets/dynamic_island_toast.dart';
 import '../../../../core/widgets/modern_empty_state.dart';
+import '../../../../core/widgets/modern_loader.dart';
 import '../cubit/services_cubit.dart';
 import '../cubit/services_state.dart';
 import '../widgets/service_search_bar.dart';
@@ -22,8 +23,14 @@ class ServicesScreen extends StatelessWidget {
       body: BlocBuilder<ServicesCubit, ServicesState>(
         builder: (context, state) {
           if (state is ServicesLoading) {
-            return const Center(
-              child: CircularProgressIndicator(color: AppColors.primary),
+            return const Scaffold(
+              backgroundColor: AppColors.surface,
+              body: Center(
+                child: ModernLoader(
+                  message: 'Sinkronisasi Layanan...',
+                  subMessage: 'Mengambil data status endpoint terkini',
+                ),
+              ),
             );
           }
 

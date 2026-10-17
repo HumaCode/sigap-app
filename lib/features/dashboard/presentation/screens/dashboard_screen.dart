@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_typography.dart';
 import '../../../../core/widgets/offline_banner.dart';
+import '../../../../core/widgets/modern_loader.dart';
 import '../cubit/dashboard_cubit.dart';
 import '../cubit/dashboard_state.dart';
 import '../widgets/incident_critical_banner.dart';
@@ -54,7 +55,13 @@ class DashboardScreen extends StatelessWidget {
             builder: (context, state) {
               if (state is DashboardLoading) {
                 return const Center(
-                  child: CircularProgressIndicator(color: AppColors.primary),
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 80),
+                    child: ModernLoader(
+                      message: 'Mengambil Metrik Dashboard...',
+                      subMessage: 'Menghitung skor reliabilitas & latensi',
+                    ),
+                  ),
                 );
               }
 

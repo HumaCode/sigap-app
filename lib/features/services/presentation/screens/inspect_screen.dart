@@ -5,6 +5,7 @@ import '../../../../core/theme/app_typography.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/widgets/dynamic_island_toast.dart';
 import '../../../../core/widgets/modern_empty_state.dart';
+import '../../../../core/widgets/modern_loader.dart';
 import '../../data/models/inspect_model.dart';
 import '../cubit/services_cubit.dart';
 import '../widgets/uptime_heatmap_grid.dart';
@@ -85,7 +86,10 @@ class _InspectScreenState extends State<InspectScreen> {
       return const Scaffold(
         backgroundColor: AppColors.surface,
         body: Center(
-          child: CircularProgressIndicator(color: AppColors.primary),
+          child: ModernLoader(
+            message: 'Memuat Data Telemetri...',
+            subMessage: 'Menganalisis performa server & latensi',
+          ),
         ),
       );
     }
