@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import '../../../../core/theme/app_colors.dart';
 
 /// Modern & Interactive Curved Navigation Bar for SIGAP SRE Suite
-class CustomBottomNavBar extends StatefulWidget {
+class CustomBottomNavBar extends StatelessWidget {
   final int currentIndex;
   final ValueChanged<int> onTap;
   final int activeIncidentsCount;
@@ -17,70 +17,42 @@ class CustomBottomNavBar extends StatefulWidget {
   });
 
   @override
-  State<CustomBottomNavBar> createState() => _CustomBottomNavBarState();
-}
-
-class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
-  final GlobalKey<CurvedNavigationBarState> _bottomNavKey = GlobalKey();
-
-  @override
-  void didUpdateWidget(covariant CustomBottomNavBar oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.currentIndex != widget.currentIndex) {
-      _bottomNavKey.currentState?.setPage(widget.currentIndex);
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.transparent,
-        boxShadow: [
-          BoxShadow(
-            color: const Color(0xFF0F172A).withValues(alpha: 0.08),
-            blurRadius: 20,
-            offset: const Offset(0, -4),
-          ),
-        ],
-      ),
-      child: CurvedNavigationBar(
-        key: _bottomNavKey,
-        index: widget.currentIndex.clamp(0, 3),
-        height: 62.0,
-        items: <Widget>[
-          _buildBarIcon(
-            index: 0,
-            icon: Icons.speed_rounded,
-            tooltip: 'Dashboard',
-          ),
-          _buildBarIcon(
-            index: 1,
-            icon: Icons.dns_rounded,
-            tooltip: 'Services',
-          ),
-          _buildBarIcon(
-            index: 2,
-            icon: Icons.warning_amber_rounded,
-            tooltip: 'Incidents',
-            badgeCount: widget.activeIncidentsCount,
-          ),
-          _buildBarIcon(
-            index: 3,
-            icon: Icons.verified_user_rounded,
-            tooltip: 'Inspect',
-          ),
-        ],
-        color: Colors.white,
-        buttonBackgroundColor: AppColors.primary,
-        backgroundColor: Colors.transparent,
-        animationCurve: Curves.easeInOutCubic,
-        animationDuration: const Duration(milliseconds: 380),
-        onTap: (index) {
-          HapticFeedback.lightImpact();
-          widget.onTap(index);
-        },
-      ),
+    return CurvedNavigationBar(
+      index: currentIndex.clamp(0, 3),
+      height: 62.0,
+      items: <Widget>[
+        _buildBarIcon(
+          index: 0,
+          icon: Icons.speed_rounded,
+          tooltip: 'Dashboard',
+        ),
+        _buildBarIcon(
+          index: 1,
+          icon: Icons.dns_rounded,
+          tooltip: 'Services',
+        ),
+        _buildBarIcon(
+          index: 2,
+          icon: Icons.warning_amber_rounded,
+          tooltip: 'Incidents',
+          badgeCount: activeIncidentsCount,
+        ),
+        _buildBarIcon(
+          index: 3,
+          icon: Icons.verified_user_rounded,
+          tooltip: 'Inspect',
+        ),
+      ],
+      color: Colors.white,
+      buttonBackgroundColor: AppColors.primary,
+      backgroundColor: Colors.transparent,
+      animationCurve: Curves.easeInOutCubic,
+      animationDuration: const Duration(milliseconds: 350),
+      onTap: (index) {
+        HapticFeedback.lightImpact();
+        onTap(index);
+      },
     );
   }
 
@@ -90,7 +62,7 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
     required String tooltip,
     int? badgeCount,
   }) {
-    final isSelected = widget.currentIndex == index;
+    final isSelected = currentIndex == index;
 
     return Tooltip(
       message: tooltip,
@@ -98,14 +70,10 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
         clipBehavior: Clip.none,
         alignment: Alignment.center,
         children: [
-          AnimatedScale(
-            duration: const Duration(milliseconds: 250),
-            scale: isSelected ? 1.08 : 1.0,
-            child: Icon(
-              icon,
-              size: isSelected ? 26 : 24,
-              color: isSelected ? Colors.white : const Color(0xFF64748B),
-            ),
+          Icon(
+            icon,
+            size: isSelected ? 26 : 23,
+            color: isSelected ? Colors.white : const Color(0xFF64748B),
           ),
           if (badgeCount != null && badgeCount > 0)
             Positioned(
