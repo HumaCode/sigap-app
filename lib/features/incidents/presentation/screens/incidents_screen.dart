@@ -64,9 +64,6 @@ class IncidentsScreen extends StatelessWidget {
                         icon: state.allIncidents.isEmpty
                             ? Icons.verified_user_rounded
                             : Icons.filter_list_off_rounded,
-                        accentColor: state.allIncidents.isEmpty
-                            ? AppColors.statusOperational
-                            : AppColors.primary,
                         title: state.allIncidents.isEmpty
                             ? 'Sistem Terpantau Normal'
                             : 'Tidak Ada Insiden (${state.activeSeverityFilter.toUpperCase()})',
