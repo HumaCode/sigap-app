@@ -12,6 +12,8 @@ import 'package:sigap_app/features/incidents/presentation/cubit/incidents_cubit.
 import 'package:sigap_app/features/incidents/presentation/cubit/incidents_state.dart';
 import 'package:sigap_app/features/incidents/presentation/screens/incidents_screen.dart';
 import 'package:sigap_app/features/navigation/presentation/widgets/custom_bottom_nav_bar.dart';
+import 'package:sigap_app/features/auth/domain/entities/user_entity.dart';
+import 'package:sigap_app/features/profile/presentation/widgets/profile_settings_bottom_sheet.dart';
 
 class MainNavigationShell extends StatefulWidget {
   const MainNavigationShell({super.key});
@@ -80,40 +82,18 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
 
   void _showUserActionMenu() {
     final authState = context.read<AuthCubit>().state;
-    final userName = authState is Authenticated ? authState.user.name : 'SRE Operations Lead';
-    final userEmail = authState is Authenticated ? authState.user.email : 'admin@sigap.id';
-    final userRoles = authState is Authenticated ? authState.user.roles.join(', ') : 'admin';
+    final user = authState is Authenticated
+        ? authState.user
+        : const UserEntity(
+            id: '1',
+            name: 'DEV',
+            username: 'dev',
+            email: 'dev@sigap.id',
+            roles: ['dev'],
+            permissions: ['view_dashboard', 'manage_services', 'manage_incidents', 'inspect_telemetry'],
+          );
 
-    showModalBottomSheet(
-      context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (ctx) => SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ListTile(
-                leading: const CircleAvatar(child: Icon(Icons.person)),
-                title: Text(userName),
-                subtitle: Text('$userEmail · Roles: $userRoles'),
-              ),
-              const Divider(),
-              ListTile(
-                leading: const Icon(Icons.logout, color: Colors.red),
-                title: const Text('Logout dari Akun'),
-                onTap: () {
-                  Navigator.pop(ctx);
-                  context.read<AuthCubit>().logout();
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+    ProfileSettingsBottomSheet.show(context, user);
   }
 
   @override
