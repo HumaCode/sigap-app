@@ -51,11 +51,54 @@ class IncidentsScreen extends StatelessWidget {
 
                     // 2. Incident Stream
                     if (incidents.isEmpty) ...[
-                      const SizedBox(height: 40),
-                      const Center(
-                        child: Text(
-                          'Semua insiden dalam kategori ini telah terselesaikan.',
-                          style: TextStyle(color: AppColors.textCaption),
+                      const SizedBox(height: 48),
+                      Center(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              width: 64,
+                              height: 64,
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFF0FDF4),
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: const Color(0xFFBBF7D0),
+                                  width: 1.5,
+                                ),
+                              ),
+                              child: const Icon(
+                                Icons.shield_outlined,
+                                color: Color(0xFF16A34A),
+                                size: 32,
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              state.allIncidents.isEmpty
+                                  ? 'Tidak Ada Insiden Aktif'
+                                  : 'Tidak Ada Insiden di Kategori Ini',
+                              style: const TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF0F172A),
+                              ),
+                            ),
+                            const SizedBox(height: 6),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 24),
+                              child: Text(
+                                state.allIncidents.isEmpty
+                                    ? 'Seluruh endpoint armada SRE terpantau normal dan tidak ada insiden yang berjalan.'
+                                    : 'Semua insiden pada filter yang dipilih telah terselesaikan.',
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  color: AppColors.textCaption,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ] else ...[

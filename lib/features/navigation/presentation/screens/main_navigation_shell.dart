@@ -10,6 +10,7 @@ import 'package:sigap_app/features/services/presentation/cubit/services_cubit.da
 import 'package:sigap_app/features/services/presentation/screens/services_screen.dart';
 import 'package:sigap_app/features/services/presentation/screens/service_detail_screen.dart';
 import 'package:sigap_app/features/incidents/presentation/cubit/incidents_cubit.dart';
+import 'package:sigap_app/features/incidents/presentation/cubit/incidents_state.dart';
 import 'package:sigap_app/features/incidents/presentation/screens/incidents_screen.dart';
 import 'package:sigap_app/features/navigation/presentation/widgets/custom_bottom_nav_bar.dart';
 
@@ -30,6 +31,8 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
     context.read<DashboardCubit>().loadDashboard();
     context.read<ServicesCubit>().loadServices();
     context.read<IncidentsCubit>().loadIncidents();
+    // Real-time background sync without manual reload
+    context.read<IncidentsCubit>().startPolling();
   }
 
   void _onTabSelected(int index) {
@@ -144,10 +147,20 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
           ServiceDetailScreen(service: ServiceSiteModel.sampleServices.first),
         ],
       ),
-      bottomNavigationBar: CustomBottomNavBar(
-        currentIndex: _currentIndex,
-        onTap: _onTabSelected,
-        activeIncidentsCount: 1,
+      bottomNavigationBar: BlocBuilder<IncidentsCubit, IncidentsState>(
+        builder: (context, incidentsState) {
+          int activeCount = 0;
+          if (incidentsState is IncidentsLoaded) {
+            activeCount = incidentsState.allIncidents
+                .where((i) => !i.isResolved)
+                .length;
+          }
+          return CustomBottomNavBar(
+            currentIndex: _currentIndex,
+            onTap: _onTabSelected,
+            activeIncidentsCount: activeCount,
+          );
+        },
       ),
     );
   }

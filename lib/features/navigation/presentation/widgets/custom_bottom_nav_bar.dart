@@ -12,7 +12,7 @@ class CustomBottomNavBar extends StatelessWidget {
     super.key,
     required this.currentIndex,
     required this.onTap,
-    this.activeIncidentsCount = 1,
+    this.activeIncidentsCount = 0,
   });
 
   @override
