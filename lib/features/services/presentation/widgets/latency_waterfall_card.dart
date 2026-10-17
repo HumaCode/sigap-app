@@ -29,29 +29,37 @@ class LatencyWaterfallCard extends StatelessWidget {
         children: [
           // Header
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                children: [
-                  const Icon(
-                    Icons.waterfall_chart_rounded,
-                    size: 18,
-                    color: AppColors.primary,
-                  ),
-                  const SizedBox(width: 6),
-                  Text(
-                    'Latency Breakdown (Edge to Core)',
-                    style: AppTypography.titleSm.copyWith(
-                      color: AppColors.textPrimary,
-                    ),
-                  ),
-                ],
+              const Icon(
+                Icons.waterfall_chart_rounded,
+                size: 18,
+                color: AppColors.primary,
               ),
-              Text(
-                'Total ${breakdown.totalMs} ms',
-                style: AppTypography.codeSm.copyWith(
-                  color: AppColors.textPrimary,
-                  fontWeight: FontWeight.w700,
+              const SizedBox(width: 6),
+              Expanded(
+                child: Text(
+                  'Latency Breakdown',
+                  style: AppTypography.titleSm.copyWith(
+                    color: AppColors.textPrimary,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              const SizedBox(width: 8),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                decoration: BoxDecoration(
+                  color: AppColors.surfaceSubtle,
+                  borderRadius: AppSpacing.roundedSm,
+                ),
+                child: Text(
+                  'Total ${breakdown.totalMs} ms',
+                  style: AppTypography.codeSm.copyWith(
+                    color: AppColors.accentTealDark,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 10.5,
+                  ),
                 ),
               ),
             ],
@@ -76,14 +84,18 @@ class LatencyWaterfallCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              title,
-              style: AppTypography.bodySm.copyWith(
-                color: AppColors.textPrimary,
+            Expanded(
+              child: Text(
+                title,
+                style: AppTypography.bodySm.copyWith(
+                  color: AppColors.textPrimary,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
+            const SizedBox(width: 8),
             Text(
               '$ms ms',
               style: AppTypography.codeSm.copyWith(

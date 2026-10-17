@@ -26,29 +26,36 @@ class UptimeHeatmapGrid extends StatelessWidget {
         children: [
           // Header
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                children: [
-                  const Icon(
-                    Icons.calendar_month_outlined,
-                    size: 18,
-                    color: AppColors.primary,
-                  ),
-                  const SizedBox(width: 6),
-                  Text(
-                    '30-Day Reliability Heatmap',
-                    style: AppTypography.titleSm.copyWith(
-                      color: AppColors.textPrimary,
-                    ),
-                  ),
-                ],
+              const Icon(
+                Icons.calendar_month_outlined,
+                size: 18,
+                color: AppColors.primary,
               ),
-              Text(
-                '30 Days Ago – Today',
-                style: AppTypography.codeSm.copyWith(
-                  color: AppColors.textCaption,
-                  fontSize: 10,
+              const SizedBox(width: 6),
+              Expanded(
+                child: Text(
+                  '30-Day Reliability Heatmap',
+                  style: AppTypography.titleSm.copyWith(
+                    color: AppColors.textPrimary,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              const SizedBox(width: 8),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                decoration: BoxDecoration(
+                  color: AppColors.surfaceSubtle,
+                  borderRadius: AppSpacing.roundedSm,
+                ),
+                child: Text(
+                  '30d Telemetry',
+                  style: AppTypography.codeSm.copyWith(
+                    color: AppColors.textCaption,
+                    fontSize: 9.5,
+                  ),
                 ),
               ),
             ],
@@ -103,8 +110,10 @@ class UptimeHeatmapGrid extends StatelessWidget {
           const SizedBox(height: 12),
 
           // Legend
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Wrap(
+            spacing: 12,
+            runSpacing: 6,
+            alignment: WrapAlignment.spaceBetween,
             children: [
               _buildLegendItem(AppColors.statusOperational, 'Operational (>99.9%)'),
               _buildLegendItem(AppColors.statusDegraded, 'Degraded'),
