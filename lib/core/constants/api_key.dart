@@ -32,6 +32,7 @@ class ApiKey {
   static String get incidents => '${baseUrl}incidents';
   static String incidentDetail(dynamic id) => '${baseUrl}incidents/$id';
   static String updateIncidentStatus(dynamic id) => '${baseUrl}incidents/$id/status';
+  static String incidentNotes(dynamic id) => '${baseUrl}incidents/$id/notes';
 
   // Device Registration (Push Notification)
   static String get deviceToken => '${baseUrl}devices/token';

@@ -28,6 +28,7 @@ class ApiConstants {
   static String get incidents => ApiKey.incidents;
   static String incidentDetail(dynamic id) => ApiKey.incidentDetail(id);
   static String updateIncidentStatus(dynamic id) => ApiKey.updateIncidentStatus(id);
+  static String incidentNotes(dynamic id) => ApiKey.incidentNotes(id);
 
   // Device registration for FCM
   static String get deviceToken => ApiKey.deviceToken;

@@ -1,4 +1,5 @@
 import '../../domain/entities/incident_entity.dart';
+import 'insiden_model.dart';
 
 class IncidentModel extends IncidentEntity {
   const IncidentModel({
@@ -17,6 +18,26 @@ class IncidentModel extends IncidentEntity {
     required super.aiMitigations,
     super.technicianNotes,
   });
+
+  factory IncidentModel.fromItem(Item item) {
+    final entity = item.toEntity();
+    return IncidentModel(
+      id: entity.id,
+      incidentCode: entity.incidentCode,
+      title: entity.title,
+      endpoint: entity.endpoint,
+      severity: entity.severity,
+      status: entity.status,
+      timeAgo: entity.timeAgo,
+      errorRate: entity.errorRate,
+      affectedUsers: entity.affectedUsers,
+      blastRadius: entity.blastRadius,
+      aiRootCause: entity.aiRootCause,
+      aiConfidence: entity.aiConfidence,
+      aiMitigations: entity.aiMitigations,
+      technicianNotes: entity.technicianNotes,
+    );
+  }
 
   factory IncidentModel.fromJson(Map<String, dynamic> json) {
     final mitigations = (json['ai_mitigations'] as List?)

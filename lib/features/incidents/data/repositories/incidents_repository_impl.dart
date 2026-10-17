@@ -24,6 +24,6 @@ class IncidentsRepositoryImpl implements IncidentsRepository {
 
   @override
   Future<void> addTechnicianNote(int id, String note) async {
-    // Save locally or post note
+    await remoteDataSource.addNote(id, note);
   }
 }
