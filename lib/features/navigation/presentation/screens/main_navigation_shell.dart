@@ -5,10 +5,9 @@ import 'package:sigap_app/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:sigap_app/features/auth/presentation/cubit/auth_state.dart';
 import 'package:sigap_app/features/dashboard/presentation/cubit/dashboard_cubit.dart';
 import 'package:sigap_app/features/dashboard/presentation/screens/dashboard_screen.dart';
-import 'package:sigap_app/features/services/data/models/service_site_model.dart';
 import 'package:sigap_app/features/services/presentation/cubit/services_cubit.dart';
 import 'package:sigap_app/features/services/presentation/screens/services_screen.dart';
-import 'package:sigap_app/features/services/presentation/screens/service_detail_screen.dart';
+import 'package:sigap_app/features/services/presentation/screens/inspect_screen.dart';
 import 'package:sigap_app/features/incidents/presentation/cubit/incidents_cubit.dart';
 import 'package:sigap_app/features/incidents/presentation/cubit/incidents_state.dart';
 import 'package:sigap_app/features/incidents/presentation/screens/incidents_screen.dart';
@@ -143,8 +142,10 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
           // Tab 2: Incidents War Room
           const IncidentsScreen(),
 
-          // Tab 3: Deep Inspection of Key Outage Service
-          ServiceDetailScreen(service: ServiceSiteModel.sampleServices.first),
+          // Tab 3: Deep Service Telemetry Inspection
+          InspectScreen(
+            onNavigateToServices: () => _onTabSelected(1),
+          ),
         ],
       ),
       bottomNavigationBar: BlocBuilder<IncidentsCubit, IncidentsState>(
