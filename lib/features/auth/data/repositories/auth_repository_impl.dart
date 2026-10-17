@@ -17,12 +17,14 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<UserEntity> login(String email, String password) async {
-    final user = await remoteDataSource.login(email, password);
+    final model = await remoteDataSource.login(email, password);
+    final user = model.toEntity();
+
     if (user.token != null) {
       await secureStorage.saveToken(user.token!);
     }
-    await secureStorage.saveUserRole(user.role);
-    await secureStorage.saveUsername(user.email);
+    await secureStorage.saveUserRole(user.primaryRole);
+    await secureStorage.saveUsername(user.username.isNotEmpty ? user.username : user.email);
     return user;
   }
 
@@ -37,14 +39,16 @@ class AuthRepositoryImpl implements AuthRepository {
     final token = await secureStorage.getToken();
     if (token == null) return null;
 
-    final email = await secureStorage.getSavedUsername() ?? 'sre@sigap.id';
+    final username = await secureStorage.getSavedUsername() ?? 'sre_admin';
     final role = await secureStorage.getUserRole() ?? 'admin';
 
     return UserEntity(
-      id: 1,
-      name: email.split('@').first.toUpperCase(),
-      email: email,
-      role: role,
+      id: '1',
+      name: username.toUpperCase(),
+      username: username,
+      email: username.contains('@') ? username : '$username@sigap.id',
+      roles: [role],
+      permissions: const ['view_dashboard', 'manage_services', 'manage_incidents'],
       token: token,
     );
   }

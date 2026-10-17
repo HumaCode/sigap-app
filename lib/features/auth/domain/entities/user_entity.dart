@@ -1,22 +1,33 @@
 import 'package:equatable/equatable.dart';
 
 class UserEntity extends Equatable {
-  final int id;
+  final String id;
   final String name;
+  final String username;
   final String email;
-  final String role; // 'admin', 'dev', 'executive', 'user'
+  final List<String> roles;
+  final List<String> permissions;
   final String? token;
 
   const UserEntity({
     required this.id,
     required this.name,
+    required this.username,
     required this.email,
-    required this.role,
+    required this.roles,
+    required this.permissions,
     this.token,
   });
 
-  bool get isAdminOrDev => role == 'admin' || role == 'dev';
+  String get primaryRole => roles.isNotEmpty ? roles.first : 'user';
+
+  // Backward compatibility
+  String get role => primaryRole;
+
+  bool get isAdminOrDev => roles.any((r) => r.toLowerCase() == 'admin' || r.toLowerCase() == 'dev');
+
+  bool hasPermission(String permission) => permissions.contains(permission);
 
   @override
-  List<Object?> get props => [id, name, email, role, token];
+  List<Object?> get props => [id, name, username, email, roles, permissions, token];
 }

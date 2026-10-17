@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sigap_app/core/widgets/custom_app_bar.dart';
 import 'package:sigap_app/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:sigap_app/features/auth/presentation/cubit/auth_state.dart';
 import 'package:sigap_app/features/dashboard/presentation/cubit/dashboard_cubit.dart';
 import 'package:sigap_app/features/dashboard/presentation/screens/dashboard_screen.dart';
 import 'package:sigap_app/features/services/data/models/service_site_model.dart';
@@ -76,6 +77,11 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
   }
 
   void _showUserActionMenu() {
+    final authState = context.read<AuthCubit>().state;
+    final userName = authState is Authenticated ? authState.user.name : 'SRE Operations Lead';
+    final userEmail = authState is Authenticated ? authState.user.email : 'admin@sigap.id';
+    final userRoles = authState is Authenticated ? authState.user.roles.join(', ') : 'admin';
+
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -87,10 +93,10 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const ListTile(
-                leading: CircleAvatar(child: Icon(Icons.person)),
-                title: Text('SRE Operations Lead'),
-                subtitle: Text('admin@sigap.id · Role: Admin'),
+              ListTile(
+                leading: const CircleAvatar(child: Icon(Icons.person)),
+                title: Text(userName),
+                subtitle: Text('$userEmail · Roles: $userRoles'),
               ),
               const Divider(),
               ListTile(

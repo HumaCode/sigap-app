@@ -27,22 +27,33 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       );
 
       final data = response.data;
-      final token = data['token'] ?? data['access_token'] ?? 'mock_token_sre';
-      return UserModel.fromJson(data, token: token.toString());
+      if (data is Map<String, dynamic>) {
+        return UserModel.fromJson(data);
+      }
+      throw Exception('Format respon server tidak valid');
     } on DioException catch (e) {
-      // If endpoint is still in development or network fails, provide a smooth fallback
       if (e.response?.data != null && e.response?.data is Map) {
         final message = e.response?.data['message'] ?? 'Login failed';
         throw Exception(message);
       }
 
       // Demo/Fallback user for offline & staging development
+      final uname = email.contains('@') ? email.split('@').first : email;
       return UserModel(
-        id: 1,
-        name: email.split('@').first.toUpperCase(),
-        email: email,
-        role: email.contains('admin') ? 'admin' : 'dev',
-        token: 'dev_sanctum_session_token_${DateTime.now().millisecondsSinceEpoch}',
+        success: true,
+        message: 'Login Berhasil (Demo Mode)',
+        data: Data(
+          token: 'dev_sanctum_session_token_${DateTime.now().millisecondsSinceEpoch}',
+          tokenType: 'Bearer',
+          user: User(
+            id: '1',
+            name: uname.toUpperCase(),
+            username: uname,
+            email: email,
+            roles: [email.contains('admin') ? 'admin' : 'dev'],
+            permissions: const ['view_dashboard', 'manage_services', 'manage_incidents'],
+          ),
+        ),
       );
     }
   }
@@ -59,6 +70,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<UserModel> getMe() async {
     final response = await apiClient.dio.get(ApiConstants.me);
-    return UserModel.fromJson(response.data);
+    final data = response.data;
+    if (data is Map<String, dynamic>) {
+      return UserModel.fromJson(data);
+    }
+    throw Exception('Format respon profil tidak valid');
   }
 }
