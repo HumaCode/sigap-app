@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_typography.dart';
+import '../../../../core/widgets/dynamic_island_toast.dart';
 import '../cubit/auth_cubit.dart';
 import '../cubit/auth_state.dart';
 import '../widgets/auth_background.dart';
@@ -35,22 +36,10 @@ class _LoginScreenState extends State<LoginScreen> {
     final password = _passwordController.text.trim();
 
     if (email.isEmpty || password.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Row(
-            children: [
-              const Icon(Icons.info_outline, color: Colors.white, size: 20),
-              const SizedBox(width: 10),
-              Text(
-                'Mohon lengkapi email dan password',
-                style: AppTypography.bodySm.copyWith(color: Colors.white),
-              ),
-            ],
-          ),
-          backgroundColor: AppColors.statusDegraded,
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        ),
+      DynamicIslandToast.warning(
+        context,
+        'Mohon lengkapi email/username dan kata sandi Anda.',
+        title: 'VALIDASI INPUT',
       );
       return;
     }
@@ -73,49 +62,17 @@ class _LoginScreenState extends State<LoginScreen> {
               child: BlocConsumer<AuthCubit, AuthState>(
                 listener: (context, state) {
                   if (state is AuthError) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Row(
-                          children: [
-                            const Icon(Icons.error_outline, color: Colors.white, size: 20),
-                            const SizedBox(width: 10),
-                            Expanded(
-                              child: Text(
-                                state.message,
-                                style: AppTypography.bodySm.copyWith(color: Colors.white),
-                              ),
-                            ),
-                          ],
-                        ),
-                        backgroundColor: AppColors.statusOutage,
-                        behavior: SnackBarBehavior.floating,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
+                    DynamicIslandToast.danger(
+                      context,
+                      state.message,
+                      title: 'AUTENTIKASI GAGAL',
                     );
                   }
                   if (state is Authenticated) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Row(
-                          children: [
-                            const Icon(Icons.check_circle_outline, color: Colors.white, size: 20),
-                            const SizedBox(width: 10),
-                            Expanded(
-                              child: Text(
-                                'Login berhasil! Selamat datang, ${state.user.name}.',
-                                style: AppTypography.bodySm.copyWith(color: Colors.white),
-                              ),
-                            ),
-                          ],
-                        ),
-                        backgroundColor: AppColors.statusOperational,
-                        behavior: SnackBarBehavior.floating,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
+                    DynamicIslandToast.success(
+                      context,
+                      'Selamat datang kembali, ${state.user.name}!',
+                      title: 'LOGIN BERHASIL',
                     );
                   }
                 },

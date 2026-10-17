@@ -43,6 +43,25 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         throw Exception('Koneksi ke server timeout. Pastikan server Laravel aktif.');
       }
       if (e.type == DioExceptionType.connectionError) {
+        if (ApiConstants.login.contains('localhost')) {
+          try {
+            final fallbackUrl =
+                ApiConstants.login.replaceAll('localhost', '10.0.2.2');
+            final retryResponse = await apiClient.dio.post(
+              fallbackUrl,
+              data: {
+                'login': email,
+                'email': email,
+                'password': password,
+                'device_name': 'SIGAP_Android_Mobile',
+              },
+            );
+            if (retryResponse.data is Map<String, dynamic>) {
+              return UserModel.fromJson(retryResponse.data);
+            }
+          } catch (_) {}
+        }
+
         throw Exception(
           'Gagal terhubung ke API (${ApiConstants.baseUrl}). Pastikan Laravel Octane dev server aktif.',
         );
