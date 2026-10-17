@@ -8,8 +8,8 @@ class ApiKey {
   static const String lanBaseUrl = 'http://192.168.1.4:8000/api/v1/';
   static const String productionBaseUrl = 'https://sigap.humacode.my.id/api/v1/';
 
-  // Active Base URL Server (Default emulator Android menggunakan 10.0.2.2)
-  static String baseUrl = emulatorBaseUrl;
+  // Active Base URL Server (Production Endpoint)
+  static String baseUrl = productionBaseUrl;
 
   // Official Mobile App Key (dikirim melalui header X-App-Key)
   static const String apiKey = 'base64:OEa3k7TNWkuFpZ4FDrZhnT4eYq+KwbAoYoIFxl4NZKI=';
