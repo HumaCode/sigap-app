@@ -42,44 +42,6 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
     });
   }
 
-  void _showClusterBottomSheet() {
-    showModalBottomSheet(
-      context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (ctx) => SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Pilih Cluster SRE',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 12),
-              ListTile(
-                leading: const Icon(Icons.cloud_done, color: Colors.teal),
-                title: const Text('prod-cluster-01 (Primary Production)'),
-                subtitle: const Text('27 Services · Anycast Edge Active'),
-                trailing: const Icon(Icons.check, color: Colors.teal),
-                onTap: () => Navigator.pop(ctx),
-              ),
-              ListTile(
-                leading: const Icon(Icons.cloud_queue),
-                title: const Text('staging-cluster-02 (Staging)'),
-                subtitle: const Text('12 Services · Internal QA'),
-                onTap: () => Navigator.pop(ctx),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
   void _showUserActionMenu() {
     final authState = context.read<AuthCubit>().state;
     final user = authState is Authenticated
@@ -100,7 +62,6 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        onClusterTap: _showClusterBottomSheet,
         onProfileTap: _showUserActionMenu,
         onNotificationTap: () => _onTabSelected(2),
       ),

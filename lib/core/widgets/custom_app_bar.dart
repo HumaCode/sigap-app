@@ -7,7 +7,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback? onNotificationTap;
   final VoidCallback? onProfileTap;
   final VoidCallback? onClusterTap;
-  final String activeCluster;
+  final String? activeCluster;
   final bool hasUnreadAlerts;
 
   const CustomAppBar({
@@ -15,7 +15,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.onNotificationTap,
     this.onProfileTap,
     this.onClusterTap,
-    this.activeCluster = 'prod-cluster-01',
+    this.activeCluster,
     this.hasUnreadAlerts = true,
   });
 
@@ -67,42 +67,43 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ],
               ),
 
-              // Cluster Selector Pill
-              InkWell(
-                onTap: onClusterTap,
-                borderRadius: AppSpacing.roundedMd,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: AppColors.surfaceSubtle,
-                    borderRadius: AppSpacing.roundedMd,
-                    border: Border.all(color: AppColors.surfaceBorder, width: 0.8),
-                  ),
-                  child: Row(
-                    children: [
-                      const Icon(
-                        Icons.cloud_done_outlined,
-                        size: 15,
-                        color: AppColors.primary,
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        activeCluster,
-                        style: AppTypography.codeSm.copyWith(
-                          color: AppColors.textPrimary,
-                          fontWeight: FontWeight.w600,
+              // Cluster Selector Pill (Optional)
+              if (onClusterTap != null)
+                InkWell(
+                  onTap: onClusterTap,
+                  borderRadius: AppSpacing.roundedMd,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: AppColors.surfaceSubtle,
+                      borderRadius: AppSpacing.roundedMd,
+                      border: Border.all(color: AppColors.surfaceBorder, width: 0.8),
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.cloud_done_outlined,
+                          size: 15,
+                          color: AppColors.primary,
                         ),
-                      ),
-                      const SizedBox(width: 2),
-                      const Icon(
-                        Icons.expand_more,
-                        size: 15,
-                        color: AppColors.textSecondary,
-                      ),
-                    ],
+                        const SizedBox(width: 4),
+                        Text(
+                          activeCluster ?? 'prod-cluster-01',
+                          style: AppTypography.codeSm.copyWith(
+                            color: AppColors.textPrimary,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        const SizedBox(width: 2),
+                        const Icon(
+                          Icons.expand_more,
+                          size: 15,
+                          color: AppColors.textSecondary,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
 
               // Right Actions: Notification & Avatar
               Row(
