@@ -1,29 +1,35 @@
-/// Central API constants according to SIGAP Mobile PRD
+import 'api_key.dart';
+
+export 'api_key.dart';
+
+/// Central API Constants wrapper that references ApiKey
 class ApiConstants {
   ApiConstants._();
 
-  static const String baseUrl = 'https://sigap.humacode.my.id/api/v1';
+  static const String baseUrl = ApiKey.baseUrl;
+  static const String productionBaseUrl = ApiKey.productionBaseUrl;
+  static const String apiKey = ApiKey.apiKey;
 
   // Auth endpoints
-  static const String login = '/auth/login';
-  static const String logout = '/auth/logout';
-  static const String me = '/auth/me';
+  static const String login = ApiKey.login;
+  static const String logout = ApiKey.logout;
+  static const String me = ApiKey.me;
 
   // Dashboard endpoints
-  static const String dashboardStats = '/dashboard/stats';
+  static const String dashboardStats = ApiKey.dashboardStats;
 
   // Sites / Services endpoints
-  static const String sites = '/sites';
-  static String siteDetail(int id) => '/sites/$id';
-  static String siteCheck(int id) => '/sites/$id/check';
+  static const String sites = ApiKey.sites;
+  static String siteDetail(dynamic id) => ApiKey.siteDetail(id);
+  static String siteCheck(dynamic id) => ApiKey.siteCheck(id);
 
   // Incidents endpoints
-  static const String incidents = '/incidents';
-  static String incidentDetail(int id) => '/incidents/$id';
-  static String updateIncidentStatus(int id) => '/incidents/$id/status';
+  static const String incidents = ApiKey.incidents;
+  static String incidentDetail(dynamic id) => ApiKey.incidentDetail(id);
+  static String updateIncidentStatus(dynamic id) => ApiKey.updateIncidentStatus(id);
 
   // Device registration for FCM
-  static const String deviceToken = '/devices/token';
+  static const String deviceToken = ApiKey.deviceToken;
 
   // Network Timeouts
   static const Duration connectTimeout = Duration(seconds: 10);

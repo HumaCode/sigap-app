@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import '../constants/api_key.dart';
 import '../storage/secure_storage_service.dart';
 
 /// Interceptor that attaches the Bearer token to all outgoing requests
@@ -18,6 +19,10 @@ class ApiInterceptor extends Interceptor {
     RequestInterceptorHandler handler,
   ) async {
     options.headers['Accept'] = 'application/json';
+
+    if (ApiKey.apiKey.isNotEmpty) {
+      options.headers['X-API-KEY'] = ApiKey.apiKey;
+    }
 
     // Retrieve Bearer token if not explicitly excluded
     final token = await secureStorage.getToken();

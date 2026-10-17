@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../core/constants/api_key.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_typography.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -228,7 +229,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(height: 24),
                     Center(
                       child: Text(
-                        'Base API: https://sigap.humacode.my.id/api/v1\nLaravel Octane (FrankenPHP) · Fast Response',
+                        'Base API: ${ApiKey.baseUrl}\nLaravel Octane / Local Dev Server',
                         textAlign: TextAlign.center,
                         style: AppTypography.labelXs.copyWith(
                           color: AppColors.textCaption,
