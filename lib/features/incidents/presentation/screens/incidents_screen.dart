@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/widgets/dynamic_island_toast.dart';
+import '../../../../core/widgets/modern_empty_state.dart';
 import '../../../../core/widgets/modern_loader.dart';
 import '../cubit/incidents_cubit.dart';
 import '../cubit/incidents_state.dart';
@@ -59,55 +60,29 @@ class IncidentsScreen extends StatelessWidget {
 
                     // 2. Incident Stream
                     if (incidents.isEmpty) ...[
-                      const SizedBox(height: 48),
-                      Center(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Container(
-                              width: 64,
-                              height: 64,
-                              decoration: BoxDecoration(
-                                color: const Color(0xFFF0FDF4),
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: const Color(0xFFBBF7D0),
-                                  width: 1.5,
-                                ),
-                              ),
-                              child: const Icon(
-                                Icons.shield_outlined,
-                                color: Color(0xFF16A34A),
-                                size: 32,
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                            Text(
-                              state.allIncidents.isEmpty
-                                  ? 'Tidak Ada Insiden Aktif'
-                                  : 'Tidak Ada Insiden di Kategori Ini',
-                              style: const TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFF0F172A),
-                              ),
-                            ),
-                            const SizedBox(height: 6),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 24),
-                              child: Text(
-                                state.allIncidents.isEmpty
-                                    ? 'Seluruh endpoint armada SRE terpantau normal dan tidak ada insiden yang berjalan.'
-                                    : 'Semua insiden pada filter yang dipilih telah terselesaikan.',
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                  fontSize: 12,
-                                  color: AppColors.textCaption,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                      ModernEmptyState(
+                        icon: state.allIncidents.isEmpty
+                            ? Icons.verified_user_rounded
+                            : Icons.filter_list_off_rounded,
+                        accentColor: state.allIncidents.isEmpty
+                            ? AppColors.statusOperational
+                            : AppColors.primary,
+                        title: state.allIncidents.isEmpty
+                            ? 'Sistem Terpantau Normal'
+                            : 'Tidak Ada Insiden (${state.activeSeverityFilter.toUpperCase()})',
+                        description: state.allIncidents.isEmpty
+                            ? 'Seluruh node dan endpoint armada SRE beroperasi stabil. Tidak ada insiden aktif atau anomali yang dilaporkan saat ini.'
+                            : 'Tidak ditemukan insiden dengan tingkat keparahan tersebut. Beralih kembali ke filter "All Incidents" untuk memantau seluruh riwayat.',
+                        buttonText: state.activeSeverityFilter != 'all'
+                            ? 'Tampilkan Semua Insiden'
+                            : 'Refresh War Room',
+                        onButtonPressed: () {
+                          if (state.activeSeverityFilter != 'all') {
+                            context.read<IncidentsCubit>().filterBySeverity('all');
+                          } else {
+                            context.read<IncidentsCubit>().loadIncidents();
+                          }
+                        },
                       ),
                     ] else ...[
                       ListView.separated(
