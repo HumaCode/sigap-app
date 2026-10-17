@@ -15,7 +15,8 @@ class ApiConstants {
   static String get logout => ApiKey.logout;
   static String get me => ApiKey.me;
 
-  // Dashboard endpoints
+  // Dashboard endpoints (/api/v1/dashboard/stats)
+  static const String dashboardStatsPath = ApiKey.dashboardStatsPath;
   static String get dashboardStats => ApiKey.dashboardStats;
 
   // Sites / Services endpoints

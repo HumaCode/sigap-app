@@ -14,19 +14,22 @@ class DashboardRepositoryImpl implements DashboardRepository {
   @override
   Future<DashboardStatsEntity> getDashboardStats() async {
     try {
-      final stats = await remoteDataSource.getStats();
+      final statsModel = await remoteDataSource.getStats();
+      final entity = statsModel.toEntity();
+
       // Cache for offline resilience
       await CacheService.put(_cacheKey, {
-        'uptime_percentage': stats.uptimePercentage,
-        'total_services': stats.totalServices,
-        'operational_count': stats.operationalCount,
-        'outage_count': stats.outageCount,
-        'degraded_count': stats.degradedCount,
-        'avg_latency_ms': stats.avgLatencyMs,
-        'mttr': stats.mttr,
-        'total_heartbeats': stats.totalHeartbeats,
+        'uptime_percentage': entity.uptimePercentage,
+        'total_services': entity.totalServices,
+        'operational_count': entity.operationalCount,
+        'outage_count': entity.outageCount,
+        'degraded_count': entity.degradedCount,
+        'avg_latency_ms': entity.avgLatencyMs,
+        'mttr': entity.mttr,
+        'total_heartbeats': entity.totalHeartbeats,
       });
-      return stats;
+
+      return entity;
     } catch (_) {
       // Offline fallback from Hive cache
       final cached = CacheService.get(_cacheKey);
@@ -38,7 +41,11 @@ class DashboardRepositoryImpl implements DashboardRepository {
           cachedAt: cachedAt,
         );
       }
-      return DashboardStatsModel.fromJson({}, isFromCache: true, cachedAt: DateTime.now());
+      return DashboardStatsModel.fromJson(
+        {},
+        isFromCache: true,
+        cachedAt: DateTime.now(),
+      );
     }
   }
 

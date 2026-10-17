@@ -19,7 +19,8 @@ class ApiKey {
   static String get logout => '${baseUrl}auth/logout';
   static String get me => '${baseUrl}auth/me';
 
-  // Dashboard Endpoints
+  // Dashboard Endpoints (/api/v1/dashboard/stats)
+  static const String dashboardStatsPath = '/api/v1/dashboard/stats';
   static String get dashboardStats => '${baseUrl}dashboard/stats';
 
   // Sites / Services Endpoints
