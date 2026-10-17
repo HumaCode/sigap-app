@@ -1,4 +1,5 @@
 import '../../domain/entities/service_site_entity.dart';
+import 'sites_model.dart';
 
 class ServiceSiteModel extends ServiceSiteEntity {
   const ServiceSiteModel({
@@ -18,6 +19,31 @@ class ServiceSiteModel extends ServiceSiteEntity {
     required super.heatmapDailyUptime,
     required super.latencyBreakdown,
   });
+
+  factory ServiceSiteModel.fromItem(Item item) {
+    return ServiceSiteModel(
+      id: int.tryParse(item.id) ?? 0,
+      name: item.name,
+      domain: item.url,
+      category: item.category,
+      status: item.status,
+      statusCode: item.statusCode,
+      statusText: item.statusLabel.isNotEmpty ? item.statusLabel : '${item.statusCode}',
+      latencyMs: item.latency.valueMs,
+      sslDaysLeft: item.ssl.daysLeft,
+      regionStatus: item.summaryBadge.isNotEmpty ? item.summaryBadge : 'Edge Checked',
+      uptime30d: item.uptimePercentage,
+      lastAuditDate: item.lastCheckedAgo.isNotEmpty ? item.lastCheckedAgo : 'Just now',
+      hasDefacement: false,
+      heatmapDailyUptime: List.generate(30, (_) => item.uptimePercentage),
+      latencyBreakdown: LatencyBreakdownEntity(
+        dnsMs: (item.latency.valueMs * 0.15).round(),
+        tlsMs: (item.latency.valueMs * 0.25).round(),
+        ttfbMs: (item.latency.valueMs * 0.40).round(),
+        transferMs: (item.latency.valueMs * 0.20).round(),
+      ),
+    );
+  }
 
   factory ServiceSiteModel.fromJson(Map<String, dynamic> json) {
     final heatmap = (json['heatmap_30d'] as List?)
