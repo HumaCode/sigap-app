@@ -61,6 +61,7 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       appBar: CustomAppBar(
         onProfileTap: _showUserActionMenu,
         onNotificationTap: () => _onTabSelected(2),
