@@ -34,6 +34,10 @@ class ApiKey {
   static String updateIncidentStatus(dynamic id) => '${baseUrl}incidents/$id/status';
   static String incidentNotes(dynamic id) => '${baseUrl}incidents/$id/notes';
 
+  // Deep Inspection Endpoints (Modul 5)
+  static String get inspect => '${baseUrl}inspect';
+  static String inspectDetail(dynamic id) => '${baseUrl}inspect/$id';
+
   // Device Registration (Push Notification)
   static String get deviceToken => '${baseUrl}devices/token';
 }

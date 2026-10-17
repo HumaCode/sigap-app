@@ -3,12 +3,14 @@ import '../../../../core/constants/api_constants.dart';
 import '../../../../core/network/api_client.dart';
 import '../models/service_site_model.dart';
 import '../models/sites_model.dart';
+import '../models/inspect_model.dart';
 
 abstract class ServicesRemoteDataSource {
   Future<SitesModel> getSites({int page = 1, String? search, String? status});
   Future<List<ServiceSiteModel>> getServices();
   Future<ServiceSiteModel> getServiceDetail(dynamic id);
   Future<void> triggerCheck(dynamic id);
+  Future<InspectModel> getInspectData({dynamic id});
 }
 
 class ServicesRemoteDataSourceImpl implements ServicesRemoteDataSource {
@@ -86,5 +88,12 @@ class ServicesRemoteDataSourceImpl implements ServicesRemoteDataSource {
     try {
       await apiClient.dio.post(ApiConstants.siteCheck(id));
     } catch (_) {}
+  }
+
+  @override
+  Future<InspectModel> getInspectData({dynamic id}) async {
+    final endpoint = id != null ? ApiConstants.inspectDetail(id) : ApiConstants.inspect;
+    final response = await apiClient.dio.get(endpoint);
+    return InspectModel.fromJson(response.data as Map<String, dynamic>);
   }
 }

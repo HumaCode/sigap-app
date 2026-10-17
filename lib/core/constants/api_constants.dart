@@ -30,6 +30,10 @@ class ApiConstants {
   static String updateIncidentStatus(dynamic id) => ApiKey.updateIncidentStatus(id);
   static String incidentNotes(dynamic id) => ApiKey.incidentNotes(id);
 
+  // Deep Inspection endpoints (Modul 5)
+  static String get inspect => ApiKey.inspect;
+  static String inspectDetail(dynamic id) => ApiKey.inspectDetail(id);
+
   // Device registration for FCM
   static String get deviceToken => ApiKey.deviceToken;
 
