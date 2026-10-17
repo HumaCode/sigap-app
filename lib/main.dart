@@ -20,6 +20,8 @@ import 'features/services/data/datasources/services_remote_datasource.dart';
 import 'features/services/data/repositories/services_repository_impl.dart';
 import 'features/services/presentation/cubit/services_cubit.dart';
 
+import 'features/splash/presentation/screens/splash_screen.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -72,8 +74,15 @@ void main() async {
   );
 }
 
-class SigapApp extends StatelessWidget {
+class SigapApp extends StatefulWidget {
   const SigapApp({super.key});
+
+  @override
+  State<SigapApp> createState() => _SigapAppState();
+}
+
+class _SigapAppState extends State<SigapApp> {
+  bool _splashCompleted = false;
 
   @override
   Widget build(BuildContext context) {
@@ -81,20 +90,31 @@ class SigapApp extends StatelessWidget {
       title: 'SIGAP SRE Mobile',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
-      home: BlocBuilder<AuthCubit, AuthState>(
-        builder: (context, state) {
-          if (state is Authenticated) {
-            return const MainNavigationShell();
-          }
-          if (state is AuthInitial) {
-            return const Scaffold(
-              body: Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
-          }
-          return const LoginScreen();
+      home: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 650),
+        switchInCurve: Curves.easeInOut,
+        switchOutCurve: Curves.easeInOut,
+        transitionBuilder: (child, animation) {
+          return FadeTransition(opacity: animation, child: child);
         },
+        child: !_splashCompleted
+            ? SplashScreen(
+                key: const ValueKey('splash_screen'),
+                onFinish: () {
+                  setState(() {
+                    _splashCompleted = true;
+                  });
+                },
+              )
+            : BlocBuilder<AuthCubit, AuthState>(
+                key: const ValueKey('auth_screen'),
+                builder: (context, state) {
+                  if (state is Authenticated) {
+                    return const MainNavigationShell();
+                  }
+                  return const LoginScreen();
+                },
+              ),
       ),
     );
   }
