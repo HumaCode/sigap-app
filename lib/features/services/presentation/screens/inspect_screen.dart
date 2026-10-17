@@ -329,7 +329,7 @@ class _InspectScreenState extends State<InspectScreen> {
                   elevation: 0,
                 ),
               ),
-              const SizedBox(height: 32),
+              const SizedBox(height: 100),
             ],
           ),
         ),
