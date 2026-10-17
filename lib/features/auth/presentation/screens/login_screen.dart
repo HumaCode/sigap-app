@@ -19,8 +19,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final _emailController = TextEditingController(text: 'admin@gmail.com');
-  final _passwordController = TextEditingController(text: '123');
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
   bool _obscurePassword = true;
   bool _enableBiometric = true;
 
@@ -160,7 +160,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             AuthInputField(
                               controller: _emailController,
                               label: 'Email / Username',
-                              hint: 'Masukkan email atau username',
+                              hint: 'nama@instansi.id atau username',
                               prefixIcon: Icons.alternate_email_rounded,
                               keyboardType: TextInputType.emailAddress,
                               textInputAction: TextInputAction.next,
@@ -171,7 +171,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             AuthInputField(
                               controller: _passwordController,
                               label: 'Password',
-                              hint: 'Masukkan password kredensial',
+                              hint: 'Masukkan kata sandi akun',
                               prefixIcon: Icons.lock_outline_rounded,
                               obscureText: _obscurePassword,
                               textInputAction: TextInputAction.done,
