@@ -20,6 +20,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       final response = await apiClient.dio.post(
         ApiConstants.login,
         data: {
+          'login': email,
           'email': email,
           'password': password,
           'device_name': 'SIGAP_Android_Mobile',
@@ -33,28 +34,20 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       throw Exception('Format respon server tidak valid');
     } on DioException catch (e) {
       if (e.response?.data != null && e.response?.data is Map) {
-        final message = e.response?.data['message'] ?? 'Login failed';
+        final resData = e.response!.data as Map<String, dynamic>;
+        final message = resData['message']?.toString() ?? 'Login gagal, periksa email dan password.';
         throw Exception(message);
       }
-
-      // Demo/Fallback user for offline & staging development
-      final uname = email.contains('@') ? email.split('@').first : email;
-      return UserModel(
-        success: true,
-        message: 'Login Berhasil (Demo Mode)',
-        data: Data(
-          token: 'dev_sanctum_session_token_${DateTime.now().millisecondsSinceEpoch}',
-          tokenType: 'Bearer',
-          user: User(
-            id: '1',
-            name: uname.toUpperCase(),
-            username: uname,
-            email: email,
-            roles: [email.contains('admin') ? 'admin' : 'dev'],
-            permissions: const ['view_dashboard', 'manage_services', 'manage_incidents'],
-          ),
-        ),
-      );
+      if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout) {
+        throw Exception('Koneksi ke server timeout. Pastikan server Laravel aktif.');
+      }
+      if (e.type == DioExceptionType.connectionError) {
+        throw Exception(
+          'Gagal terhubung ke API (${ApiConstants.baseUrl}). Pastikan Laravel Octane dev server aktif.',
+        );
+      }
+      throw Exception(e.message ?? 'Terjadi kesalahan jaringan.');
     }
   }
 

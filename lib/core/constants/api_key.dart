@@ -8,8 +8,8 @@ class ApiKey {
   // Base URL Server Produksi (Cadangan / Live)
   static const String productionBaseUrl = 'https://sigap.humacode.my.id/api/v1/';
 
-  // API Key (jika backend menggunakan header X-API-KEY / Bearer ApiKey)
-  static const String apiKey = '';
+  // Official Mobile App Key (dikirim melalui header X-App-Key)
+  static const String apiKey = 'base64:OEa3k7TNWkuFpZ4FDrZhnT4eYq+KwbAoYoIFxl4NZKI=';
 
   // Auth Endpoints
   static const String login = '${baseUrl}auth/login';

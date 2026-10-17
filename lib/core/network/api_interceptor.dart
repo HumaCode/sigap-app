@@ -21,6 +21,7 @@ class ApiInterceptor extends Interceptor {
     options.headers['Accept'] = 'application/json';
 
     if (ApiKey.apiKey.isNotEmpty) {
+      options.headers['X-App-Key'] = ApiKey.apiKey;
       options.headers['X-API-KEY'] = ApiKey.apiKey;
     }
 

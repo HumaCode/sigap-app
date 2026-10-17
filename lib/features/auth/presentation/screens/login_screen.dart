@@ -18,8 +18,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final _emailController = TextEditingController(text: 'admin@sigap.id');
-  final _passwordController = TextEditingController(text: 'secret123');
+  final _emailController = TextEditingController(text: 'admin@gmail.com');
+  final _passwordController = TextEditingController(text: '123');
   bool _obscurePassword = true;
   bool _enableBiometric = true;
 
@@ -88,6 +88,29 @@ class _LoginScreenState extends State<LoginScreen> {
                           ],
                         ),
                         backgroundColor: AppColors.statusOutage,
+                        behavior: SnackBarBehavior.floating,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    );
+                  }
+                  if (state is Authenticated) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Row(
+                          children: [
+                            const Icon(Icons.check_circle_outline, color: Colors.white, size: 20),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: Text(
+                                'Login berhasil! Selamat datang, ${state.user.name}.',
+                                style: AppTypography.bodySm.copyWith(color: Colors.white),
+                              ),
+                            ),
+                          ],
+                        ),
+                        backgroundColor: AppColors.statusOperational,
                         behavior: SnackBarBehavior.floating,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
