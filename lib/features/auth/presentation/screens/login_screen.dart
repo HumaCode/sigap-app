@@ -290,7 +290,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(height: 24),
 
                       // Server Status & API Endpoint Capsule
-                      const AuthServerStatusBadge(),
+                      AuthServerStatusBadge(
+                        onEndpointChanged: () {
+                          setState(() {});
+                        },
+                      ),
                     ],
                   );
                 },
