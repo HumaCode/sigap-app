@@ -137,6 +137,67 @@ class DashboardScreen extends StatelessWidget {
                                   },
                                 ),
                                 const SizedBox(height: 16),
+                              ] else if (stats.totalServices == 0) ...[
+                                Container(
+                                  padding: const EdgeInsets.all(14),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFFF8FAFC),
+                                    borderRadius: BorderRadius.circular(18),
+                                    border: Border.all(
+                                      color: const Color(0xFFE2E8F0),
+                                      width: 1,
+                                    ),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 38,
+                                        height: 38,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                          border: Border.all(
+                                            color: const Color(0xFFCBD5E1),
+                                            width: 1,
+                                          ),
+                                        ),
+                                        child: const Icon(
+                                          Icons.info_outline_rounded,
+                                          color: Color(0xFF64748B),
+                                          size: 20,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 12),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'BELUM ADA SITUS TERDAFTAR',
+                                              style: AppTypography.labelXs
+                                                  .copyWith(
+                                                color: const Color(0xFF475569),
+                                                fontWeight: FontWeight.w800,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 2),
+                                            Text(
+                                              'Tambahkan situs atau endpoint pertama Anda di menu Sites untuk memulai pemantauan uptime.',
+                                              style:
+                                                  AppTypography.bodySm.copyWith(
+                                                color: const Color(0xFF64748B),
+                                                fontSize: 11.5,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(height: 16),
                               ] else ...[
                                 Container(
                                   padding: const EdgeInsets.all(14),

@@ -23,11 +23,9 @@ class ReliabilityGaugeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // If no services or perfect health, display 100% or real metric
-    final effectiveUptime = (uptimePercentage == 0 && totalServices == 0)
-        ? 100.0
-        : uptimePercentage;
-    final isHealthy = outageCount == 0;
+    final hasData = totalServices > 0;
+    final effectiveUptime = hasData ? uptimePercentage : 0.0;
+    final isHealthy = hasData ? (outageCount == 0) : true;
 
     return Container(
       padding: const EdgeInsets.all(20),
@@ -64,9 +62,11 @@ class ReliabilityGaugeCard extends StatelessWidget {
                         height: 6,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: isHealthy
-                              ? AppColors.statusOperational
-                              : AppColors.statusOutage,
+                          color: !hasData
+                              ? const Color(0xFF94A3B8)
+                              : isHealthy
+                                  ? AppColors.statusOperational
+                                  : AppColors.statusOutage,
                         ),
                       ),
                       const SizedBox(width: 6),
@@ -94,26 +94,30 @@ class ReliabilityGaugeCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 decoration: BoxDecoration(
-                  color: AppColors.mintBadgeTint.withValues(alpha: 0.6),
+                  color: !hasData
+                      ? const Color(0xFFF1F5F9)
+                      : AppColors.mintBadgeTint.withValues(alpha: 0.6),
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(
-                    color: AppColors.accentTeal.withValues(alpha: 0.3),
+                    color: !hasData
+                        ? const Color(0xFFE2E8F0)
+                        : AppColors.accentTeal.withValues(alpha: 0.3),
                     width: 1,
                   ),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(
-                      Icons.verified_outlined,
+                    Icon(
+                      !hasData ? Icons.hourglass_empty_rounded : Icons.verified_outlined,
                       size: 13,
-                      color: AppColors.primary,
+                      color: !hasData ? const Color(0xFF64748B) : AppColors.primary,
                     ),
                     const SizedBox(width: 4),
                     Text(
-                      'SLA: 99.90%',
+                      !hasData ? 'Standby' : 'Target: 99.90%',
                       style: AppTypography.codeSm.copyWith(
-                        color: AppColors.primary,
+                        color: !hasData ? const Color(0xFF64748B) : AppColors.primary,
                         fontWeight: FontWeight.w700,
                         fontSize: 11,
                       ),
@@ -132,22 +136,23 @@ class ReliabilityGaugeCard extends StatelessWidget {
             child: Stack(
               alignment: Alignment.center,
               children: [
-                // Glowing background aura
-                Container(
-                  width: 130,
-                  height: 130,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: (isHealthy ? AppColors.accentTeal : AppColors.statusOutage)
-                            .withValues(alpha: 0.12),
-                        blurRadius: 36,
-                        spreadRadius: 4,
-                      ),
-                    ],
+                // Glowing background aura (only when data exists and percentage > 0)
+                if (hasData && effectiveUptime > 0)
+                  Container(
+                    width: 130,
+                    height: 130,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: (isHealthy ? AppColors.accentTeal : AppColors.statusOutage)
+                              .withValues(alpha: 0.12),
+                          blurRadius: 36,
+                          spreadRadius: 4,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
 
                 // Radial Painter
                 CustomPaint(
@@ -155,6 +160,7 @@ class ReliabilityGaugeCard extends StatelessWidget {
                   painter: _ModernRadialGaugePainter(
                     percentage: effectiveUptime,
                     isHealthy: isHealthy,
+                    hasData: hasData,
                   ),
                 ),
 
@@ -166,10 +172,12 @@ class ReliabilityGaugeCard extends StatelessWidget {
                       text: TextSpan(
                         children: [
                           TextSpan(
-                            text: effectiveUptime.toStringAsFixed(1),
+                            text: hasData ? effectiveUptime.toStringAsFixed(1) : '0',
                             style: AppTypography.headlineXl.copyWith(
                               fontSize: 32,
-                              color: const Color(0xFF0F172A),
+                              color: hasData
+                                  ? const Color(0xFF0F172A)
+                                  : const Color(0xFF94A3B8),
                               fontWeight: FontWeight.w900,
                               letterSpacing: -1.0,
                             ),
@@ -177,9 +185,11 @@ class ReliabilityGaugeCard extends StatelessWidget {
                           TextSpan(
                             text: '%',
                             style: AppTypography.titleSm.copyWith(
-                              color: isHealthy
-                                  ? AppColors.primary
-                                  : AppColors.statusOutage,
+                              color: !hasData
+                                  ? const Color(0xFF94A3B8)
+                                  : isHealthy
+                                      ? AppColors.primary
+                                      : AppColors.statusOutage,
                               fontWeight: FontWeight.w800,
                             ),
                           ),
@@ -190,9 +200,11 @@ class ReliabilityGaugeCard extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2.5),
                       decoration: BoxDecoration(
-                        color: isHealthy
-                            ? AppColors.statusOperationalBg
-                            : AppColors.statusOutageBg,
+                        color: !hasData
+                            ? const Color(0xFFF1F5F9)
+                            : isHealthy
+                                ? AppColors.statusOperationalBg
+                                : AppColors.statusOutageBg,
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Row(
@@ -203,18 +215,26 @@ class ReliabilityGaugeCard extends StatelessWidget {
                             height: 5,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: isHealthy
-                                  ? AppColors.statusOperational
-                                  : AppColors.statusOutage,
+                              color: !hasData
+                                  ? const Color(0xFF94A3B8)
+                                  : isHealthy
+                                      ? AppColors.statusOperational
+                                      : AppColors.statusOutage,
                             ),
                           ),
                           const SizedBox(width: 4),
                           Text(
-                            isHealthy ? 'SLA Terpenuhi' : 'Gangguan Terdeteksi',
+                            !hasData
+                                ? 'Belum Ada Situs'
+                                : isHealthy
+                                    ? 'SLA Terpenuhi'
+                                    : 'Gangguan Terdeteksi',
                             style: AppTypography.codeSm.copyWith(
-                              color: isHealthy
-                                  ? const Color(0xFF065F46)
-                                  : AppColors.statusOutage,
+                              color: !hasData
+                                  ? const Color(0xFF64748B)
+                                  : isHealthy
+                                      ? const Color(0xFF065F46)
+                                      : AppColors.statusOutage,
                               fontWeight: FontWeight.w700,
                               fontSize: 10,
                             ),
@@ -224,9 +244,11 @@ class ReliabilityGaugeCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 3),
                     Text(
-                      isHealthy
-                          ? '0m downtime terdeteksi'
-                          : '$outageCount insiden aktif berjalan',
+                      !hasData
+                          ? 'Input situs untuk hitung uptime'
+                          : isHealthy
+                              ? '0m downtime terdeteksi'
+                              : '$outageCount insiden aktif berjalan',
                       style: AppTypography.labelXs.copyWith(
                         color: AppColors.textCaption,
                         fontSize: 9.5,
@@ -273,13 +295,16 @@ class ReliabilityGaugeCard extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(Icons.hub_outlined,
-                              size: 11, color: AppColors.primary),
+                          Icon(
+                            hasData ? Icons.hub_outlined : Icons.info_outline,
+                            size: 11,
+                            color: hasData ? AppColors.primary : const Color(0xFF94A3B8),
+                          ),
                           const SizedBox(width: 3),
                           Text(
-                            '24/7 Checked',
+                            hasData ? '24/7 Checked' : 'Data Kosong',
                             style: AppTypography.codeSm.copyWith(
-                              color: AppColors.primary,
+                              color: hasData ? AppColors.primary : const Color(0xFF94A3B8),
                               fontSize: 9.5,
                               fontWeight: FontWeight.w600,
                             ),
@@ -303,9 +328,11 @@ class ReliabilityGaugeCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        '$operationalCount/$totalServices Up',
+                        hasData ? '$operationalCount/$totalServices Up' : '0 Up',
                         style: AppTypography.codeLg.copyWith(
-                          color: AppColors.statusOperational,
+                          color: hasData
+                              ? AppColors.statusOperational
+                              : const Color(0xFF94A3B8),
                           fontWeight: FontWeight.w800,
                           fontSize: 14,
                         ),
@@ -314,13 +341,22 @@ class ReliabilityGaugeCard extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(Icons.check_circle_outline,
-                              size: 11, color: AppColors.statusOperational),
+                          Icon(
+                            hasData
+                                ? Icons.check_circle_outline
+                                : Icons.radio_button_unchecked,
+                            size: 11,
+                            color: hasData
+                                ? AppColors.statusOperational
+                                : const Color(0xFF94A3B8),
+                          ),
                           const SizedBox(width: 3),
                           Text(
-                            'Siaga Optimal',
+                            hasData ? 'Siaga Optimal' : 'Belum Ada Site',
                             style: AppTypography.codeSm.copyWith(
-                              color: AppColors.statusOperational,
+                              color: hasData
+                                  ? AppColors.statusOperational
+                                  : const Color(0xFF94A3B8),
                               fontSize: 9.5,
                               fontWeight: FontWeight.w600,
                             ),
@@ -392,10 +428,12 @@ class ReliabilityGaugeCard extends StatelessWidget {
 class _ModernRadialGaugePainter extends CustomPainter {
   final double percentage;
   final bool isHealthy;
+  final bool hasData;
 
   _ModernRadialGaugePainter({
     required this.percentage,
     required this.isHealthy,
+    required this.hasData,
   });
 
   @override
@@ -411,6 +449,8 @@ class _ModernRadialGaugePainter extends CustomPainter {
       ..strokeWidth = strokeWidth;
 
     canvas.drawCircle(center, radius, trackPaint);
+
+    if (!hasData || percentage <= 0) return;
 
     // Progress Arc Paint with Gradient Shader
     final rect = Rect.fromCircle(center: center, radius: radius);
@@ -453,6 +493,7 @@ class _ModernRadialGaugePainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant _ModernRadialGaugePainter oldDelegate) {
     return oldDelegate.percentage != percentage ||
-        oldDelegate.isHealthy != isHealthy;
+        oldDelegate.isHealthy != isHealthy ||
+        oldDelegate.hasData != hasData;
   }
 }
