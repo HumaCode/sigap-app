@@ -65,49 +65,28 @@ class AuthHeader extends StatelessWidget {
           width: 76,
           height: 76,
           decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                Color(0xFFE6FFFA),
-                Color(0xFFCCFBF1),
-              ],
-            ),
             borderRadius: BorderRadius.circular(22),
-            border: Border.all(
-              color: AppColors.accentTeal.withValues(alpha: 0.35),
-              width: 1.5,
-            ),
             boxShadow: [
               BoxShadow(
-                color: AppColors.primary.withValues(alpha: 0.12),
+                color: AppColors.primary.withValues(alpha: 0.22),
                 blurRadius: 20,
                 offset: const Offset(0, 8),
               ),
               BoxShadow(
-                color: AppColors.accentTeal.withValues(alpha: 0.15),
+                color: AppColors.accentTeal.withValues(alpha: 0.28),
                 blurRadius: 10,
                 offset: const Offset(0, 2),
               ),
             ],
           ),
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              Container(
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.white.withValues(alpha: 0.7),
-                ),
-              ),
-              const Icon(
-                Icons.radar_rounded,
-                size: 38,
-                color: AppColors.primary,
-              ),
-            ],
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(22),
+            child: Image.asset(
+              'assets/images/app_logo.png',
+              width: 76,
+              height: 76,
+              fit: BoxFit.cover,
+            ),
           ),
         ),
         const SizedBox(height: 16),

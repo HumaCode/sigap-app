@@ -217,52 +217,31 @@ class _SplashScreenState extends State<SplashScreen>
                               child: ScaleTransition(
                                 scale: _logoScale,
                                 child: Container(
-                                  width: 84,
-                                  height: 84,
+                                  width: 88,
+                                  height: 88,
                                   decoration: BoxDecoration(
-                                    gradient: const LinearGradient(
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
-                                      colors: [
-                                        Color(0xFFE6FFFA),
-                                        Color(0xFFCCFBF1),
-                                      ],
-                                    ),
                                     borderRadius: BorderRadius.circular(24),
-                                    border: Border.all(
-                                      color: AppColors.accentTeal.withValues(alpha: 0.4),
-                                      width: 2,
-                                    ),
                                     boxShadow: [
                                       BoxShadow(
-                                        color: AppColors.primary.withValues(alpha: 0.16),
-                                        blurRadius: 24,
-                                        offset: const Offset(0, 8),
+                                        color: AppColors.primary.withValues(alpha: 0.28),
+                                        blurRadius: 28,
+                                        offset: const Offset(0, 10),
                                       ),
                                       BoxShadow(
-                                        color: AppColors.accentTeal.withValues(alpha: 0.25),
-                                        blurRadius: 12,
-                                        offset: const Offset(0, 2),
+                                        color: AppColors.accentTeal.withValues(alpha: 0.35),
+                                        blurRadius: 14,
+                                        offset: const Offset(0, 4),
                                       ),
                                     ],
                                   ),
-                                  child: Stack(
-                                    alignment: Alignment.center,
-                                    children: [
-                                      Container(
-                                        width: 52,
-                                        height: 52,
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Colors.white.withValues(alpha: 0.8),
-                                        ),
-                                      ),
-                                      const Icon(
-                                        Icons.radar_rounded,
-                                        size: 42,
-                                        color: AppColors.primary,
-                                      ),
-                                    ],
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(24),
+                                    child: Image.asset(
+                                      'assets/images/app_logo.png',
+                                      width: 88,
+                                      height: 88,
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
                                 ),
                               ),

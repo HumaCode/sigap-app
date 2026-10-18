@@ -41,6 +41,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               // Logo & Tag
               Row(
                 children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.asset(
+                      'assets/images/app_logo.png',
+                      width: 26,
+                      height: 26,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
                   Text(
                     'SIGAP',
                     style: AppTypography.headlineMd.copyWith(
