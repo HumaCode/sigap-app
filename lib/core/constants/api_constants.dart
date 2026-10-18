@@ -38,6 +38,6 @@ class ApiConstants {
   static String get deviceToken => ApiKey.deviceToken;
 
   // Network Timeouts
-  static const Duration connectTimeout = Duration(seconds: 20);
-  static const Duration receiveTimeout = Duration(seconds: 20);
+  static const Duration connectTimeout = Duration(seconds: 45);
+  static const Duration receiveTimeout = Duration(seconds: 45);
 }

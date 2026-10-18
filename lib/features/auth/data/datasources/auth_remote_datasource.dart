@@ -40,7 +40,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       }
       if (e.type == DioExceptionType.connectionTimeout ||
           e.type == DioExceptionType.receiveTimeout) {
-        throw Exception('Koneksi ke server timeout. Pastikan server Laravel aktif.');
+        throw Exception('Koneksi ke server timeout. Pastikan koneksi internet emulator aktif atau ganti host ke 10.0.2.2');
       }
       if (e.type == DioExceptionType.connectionError) {
         if (ApiConstants.login.contains('localhost')) {

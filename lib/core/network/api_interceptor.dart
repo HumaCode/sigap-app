@@ -20,6 +20,8 @@ class ApiInterceptor extends Interceptor {
   ) async {
     options.baseUrl = ApiKey.baseUrl;
     options.headers['Accept'] = 'application/json';
+    options.headers['User-Agent'] =
+        'Mozilla/5.0 (Linux; Android 14; Mobile; SIGAP SRE App) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Mobile Safari/537.36';
 
     // If options.path is absolute with old host, rewrite to active ApiKey.baseUrl
     if (options.path.startsWith('http://') || options.path.startsWith('https://')) {
