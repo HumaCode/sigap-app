@@ -207,46 +207,80 @@ Diperbarui secara realtime via SIGAP Mobile Android App.
           const SizedBox(height: 16),
 
           // Rapid Status Actions & WhatsApp Share
-          Row(
-            children: [
-              Expanded(
-                child: DropdownButtonFormField<String>(
-                  initialValue: incident.status,
-                  decoration: InputDecoration(
-                    labelText: 'Status Insiden',
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                    border: OutlineInputBorder(borderRadius: AppSpacing.roundedMd),
+          Builder(
+            builder: (context) {
+              const defaultStatuses = [
+                'Open',
+                'Investigating',
+                'In Progress',
+                'Resolved',
+                'Closed',
+              ];
+
+              final rawStatus = incident.status.trim();
+
+              // Case-insensitive match with predefined statuses
+              final matchedStatus = defaultStatuses.firstWhere(
+                (s) => s.toLowerCase() == rawStatus.toLowerCase(),
+                orElse: () => rawStatus.isNotEmpty ? rawStatus : 'Open',
+              );
+
+              // Ensure the current matched status is included in options exactly once
+              final statusOptions = <String>[...defaultStatuses];
+              if (!statusOptions.any((s) => s.toLowerCase() == matchedStatus.toLowerCase())) {
+                statusOptions.insert(0, matchedStatus);
+              }
+
+              return Row(
+                children: [
+                  Expanded(
+                    child: DropdownButtonFormField<String>(
+                      key: ValueKey('${incident.id}_$matchedStatus'),
+                      initialValue: matchedStatus,
+                      decoration: InputDecoration(
+                        labelText: 'Status Insiden',
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                        border: OutlineInputBorder(borderRadius: AppSpacing.roundedMd),
+                      ),
+                      items: statusOptions.map((status) {
+                        return DropdownMenuItem<String>(
+                          value: status,
+                          child: Text(
+                            status,
+                            style: AppTypography.bodySm.copyWith(
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.textPrimary,
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (val) {
+                        if (val != null) onStatusChange(val);
+                      },
+                    ),
                   ),
-                  items: const [
-                    DropdownMenuItem(value: 'Investigating', child: Text('Investigating')),
-                    DropdownMenuItem(value: 'In Progress', child: Text('In Progress')),
-                    DropdownMenuItem(value: 'Resolved', child: Text('Resolved')),
-                  ],
-                  onChanged: (val) {
-                    if (val != null) onStatusChange(val);
-                  },
-                ),
-              ),
-              const SizedBox(width: 10),
-              ElevatedButton.icon(
-                onPressed: _shareToTeam,
-                icon: const Icon(Icons.share, size: 16),
-                label: Text(
-                  'Share Tim',
-                  style: AppTypography.codeSm.copyWith(
-                    color: AppColors.onPrimary,
-                    fontWeight: FontWeight.w700,
+                  const SizedBox(width: 10),
+                  ElevatedButton.icon(
+                    onPressed: _shareToTeam,
+                    icon: const Icon(Icons.share, size: 16),
+                    label: Text(
+                      'Share Tim',
+                      style: AppTypography.codeSm.copyWith(
+                        color: AppColors.onPrimary,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.accentTealDark,
+                      foregroundColor: AppColors.onPrimary,
+                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                      shape: RoundedRectangleBorder(borderRadius: AppSpacing.roundedMd),
+                      elevation: 0,
+                    ),
                   ),
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.accentTealDark,
-                  foregroundColor: AppColors.onPrimary,
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-                  shape: RoundedRectangleBorder(borderRadius: AppSpacing.roundedMd),
-                  elevation: 0,
-                ),
-              ),
-            ],
+                ],
+              );
+            },
           ),
         ],
       ),

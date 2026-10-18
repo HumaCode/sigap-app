@@ -526,7 +526,9 @@ class _ProfileSettingsBottomSheetState extends State<ProfileSettingsBottomSheet>
                             ),
                           ),
                           DropdownButton<int>(
-                            value: _refreshIntervalSeconds,
+                            value: const [5, 10, 30].contains(_refreshIntervalSeconds)
+                                ? _refreshIntervalSeconds
+                                : 10,
                             underline: const SizedBox.shrink(),
                             icon: const Icon(Icons.keyboard_arrow_down_rounded, size: 18),
                             items: const [

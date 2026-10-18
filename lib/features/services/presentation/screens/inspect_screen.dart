@@ -177,7 +177,9 @@ class _InspectScreenState extends State<InspectScreen> {
                   ),
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton<String>(
-                      value: _selectedServiceId,
+                      value: data.availableServices.any((s) => s.id == _selectedServiceId)
+                          ? _selectedServiceId
+                          : (data.availableServices.isNotEmpty ? data.availableServices.first.id : null),
                       isExpanded: true,
                       icon: const Icon(Icons.keyboard_arrow_down_rounded),
                       items: data.availableServices.map((s) {
