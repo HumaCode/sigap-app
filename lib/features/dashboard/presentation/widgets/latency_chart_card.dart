@@ -26,7 +26,9 @@ class LatencyChartCard extends StatelessWidget {
 
     final maxVal = points.reduce(math.max);
     final minVal = points.reduce(math.min);
-    final chartMaxY = maxVal > 0 ? (maxVal * 1.35).clamp(40.0, 500.0) : 50.0;
+    final safeMax = maxVal > 0 ? maxVal : 100.0;
+    final chartMaxY = (safeMax * 1.3).clamp(50.0, 50000.0);
+    final chartMinY = math.max(0.0, minVal * 0.8);
 
     return Container(
       padding: const EdgeInsets.all(20),
@@ -113,26 +115,48 @@ class LatencyChartCard extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                         decoration: BoxDecoration(
-                          color: AppColors.statusOperationalBg,
+                          color: currentLatencyMs < 300
+                              ? AppColors.statusOperationalBg
+                              : (currentLatencyMs < 1000
+                                  ? const Color(0xFFFEF3C7)
+                                  : const Color(0xFFFFEDD5)),
                           borderRadius: BorderRadius.circular(8),
                           border: Border.all(
-                            color: AppColors.statusOperational.withValues(alpha: 0.3),
+                            color: currentLatencyMs < 300
+                                ? AppColors.statusOperational.withValues(alpha: 0.3)
+                                : (currentLatencyMs < 1000
+                                    ? const Color(0xFFF59E0B).withValues(alpha: 0.3)
+                                    : const Color(0xFFEA580C).withValues(alpha: 0.3)),
                             width: 1,
                           ),
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Icon(
-                              Icons.bolt_rounded,
+                            Icon(
+                              currentLatencyMs < 300
+                                  ? Icons.bolt_rounded
+                                  : Icons.warning_amber_rounded,
                               size: 13,
-                              color: AppColors.statusOperational,
+                              color: currentLatencyMs < 300
+                                  ? AppColors.statusOperational
+                                  : (currentLatencyMs < 1000
+                                      ? const Color(0xFFD97706)
+                                      : const Color(0xFFEA580C)),
                             ),
                             const SizedBox(width: 3),
                             Text(
-                              currentLatencyMs < 100 ? 'Respons Cepat' : 'Degraded',
+                              currentLatencyMs < 300
+                                  ? 'Respons Cepat'
+                                  : (currentLatencyMs < 1000
+                                      ? 'Wajar'
+                                      : 'Degraded'),
                               style: AppTypography.codeSm.copyWith(
-                                color: const Color(0xFF065F46),
+                                color: currentLatencyMs < 300
+                                    ? const Color(0xFF065F46)
+                                    : (currentLatencyMs < 1000
+                                        ? const Color(0xFFB45309)
+                                        : const Color(0xFF9A3412)),
                                 fontWeight: FontWeight.w700,
                                 fontSize: 10,
                               ),
@@ -164,78 +188,104 @@ class LatencyChartCard extends StatelessWidget {
           ),
           const SizedBox(height: 18),
 
-          // Area Spline Line Chart
+          // Area Spline Line Chart with Strict Clipping
           SizedBox(
             height: 125,
-            child: LineChart(
-              LineChartData(
-                gridData: FlGridData(
-                  show: true,
-                  drawVerticalLine: false,
-                  horizontalInterval: chartMaxY / 3,
-                  getDrawingHorizontalLine: (value) => FlLine(
-                    color: const Color(0xFFE2E8F0),
-                    strokeWidth: 1,
-                    dashArray: [4, 4],
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: LineChart(
+                LineChartData(
+                  clipData: const FlClipData.all(),
+                  gridData: FlGridData(
+                    show: true,
+                    drawVerticalLine: false,
+                    horizontalInterval: math.max(chartMaxY / 3, 10.0),
+                    getDrawingHorizontalLine: (value) => FlLine(
+                      color: const Color(0xFFE2E8F0),
+                      strokeWidth: 1,
+                      dashArray: [4, 4],
+                    ),
                   ),
-                ),
-                titlesData: const FlTitlesData(show: false),
-                borderData: FlBorderData(show: false),
-                minX: 0,
-                maxX: math.max((points.length - 1).toDouble(), 1.0),
-                minY: 0,
-                maxY: chartMaxY,
-                lineTouchData: LineTouchData(
-                  touchTooltipData: LineTouchTooltipData(
-                    getTooltipItems: (touchedSpots) {
-                      return touchedSpots.map((spot) {
-                        return LineTooltipItem(
-                          '${spot.y.toInt()} ms',
-                          AppTypography.codeSm.copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w700,
+                  titlesData: const FlTitlesData(show: false),
+                  borderData: FlBorderData(show: false),
+                  minX: 0,
+                  maxX: math.max((points.length - 1).toDouble(), 1.0),
+                  minY: chartMinY,
+                  maxY: chartMaxY,
+                  lineTouchData: LineTouchData(
+                    handleBuiltInTouches: true,
+                    getTouchedSpotIndicator: (barData, spotIndexes) {
+                      return spotIndexes.map((index) {
+                        return TouchedSpotIndicatorData(
+                          FlLine(
+                            color: AppColors.primary.withValues(alpha: 0.4),
+                            strokeWidth: 1.5,
+                            dashArray: [4, 4],
+                          ),
+                          FlDotData(
+                            show: true,
+                            getDotPainter: (spot, percent, bar, idx) =>
+                                FlDotCirclePainter(
+                              radius: 4,
+                              color: AppColors.primary,
+                              strokeWidth: 2,
+                              strokeColor: Colors.white,
+                            ),
                           ),
                         );
                       }).toList();
                     },
+                    touchTooltipData: LineTouchTooltipData(
+                      getTooltipItems: (touchedSpots) {
+                        return touchedSpots.map((spot) {
+                          return LineTooltipItem(
+                            '${spot.y.toInt()} ms',
+                            AppTypography.codeSm.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          );
+                        }).toList();
+                      },
+                    ),
                   ),
+                  lineBarsData: [
+                    LineChartBarData(
+                      spots: List.generate(
+                        points.length,
+                        (i) => FlSpot(i.toDouble(), points[i]),
+                      ),
+                      isCurved: true,
+                      curveSmoothness: 0.35,
+                      color: AppColors.primary,
+                      barWidth: 2.6,
+                      isStrokeCapRound: true,
+                      dotData: FlDotData(
+                        show: true,
+                        checkToShowDot: (spot, barData) =>
+                            spot.x == barData.spots.last.x,
+                        getDotPainter: (spot, percent, bar, index) =>
+                            FlDotCirclePainter(
+                          radius: 5,
+                          color: AppColors.primary,
+                          strokeWidth: 2.5,
+                          strokeColor: Colors.white,
+                        ),
+                      ),
+                      belowBarData: BarAreaData(
+                        show: true,
+                        gradient: LinearGradient(
+                          colors: [
+                            AppColors.accentTeal.withValues(alpha: 0.28),
+                            AppColors.accentTeal.withValues(alpha: 0.0),
+                          ],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                lineBarsData: [
-                  LineChartBarData(
-                    spots: List.generate(
-                      points.length,
-                      (i) => FlSpot(i.toDouble(), points[i]),
-                    ),
-                    isCurved: true,
-                    curveSmoothness: 0.35,
-                    color: AppColors.primary,
-                    barWidth: 2.6,
-                    isStrokeCapRound: true,
-                    dotData: FlDotData(
-                      show: true,
-                      checkToShowDot: (spot, barData) =>
-                          spot.x == barData.spots.last.x,
-                      getDotPainter: (spot, percent, bar, index) =>
-                          FlDotCirclePainter(
-                        radius: 5,
-                        color: AppColors.primary,
-                        strokeWidth: 2.5,
-                        strokeColor: Colors.white,
-                      ),
-                    ),
-                    belowBarData: BarAreaData(
-                      show: true,
-                      gradient: LinearGradient(
-                        colors: [
-                          AppColors.accentTeal.withValues(alpha: 0.28),
-                          AppColors.accentTeal.withValues(alpha: 0.0),
-                        ],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                      ),
-                    ),
-                  ),
-                ],
               ),
             ),
           ),
