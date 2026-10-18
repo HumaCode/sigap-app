@@ -13,6 +13,12 @@ class AuthServerStatusBadge extends StatelessWidget {
   void _showEndpointSelector(BuildContext context) {
     final options = [
       _EndpointOption(
+        title: 'Server Produksi (Live Cloud) · Aktif',
+        subtitle: 'https://sigap.humacode.my.id/api/v1/',
+        url: ApiKey.productionBaseUrl,
+        icon: Icons.cloud_done_rounded,
+      ),
+      _EndpointOption(
         title: 'Android Emulator (10.0.2.2)',
         subtitle: 'Koneksi default emulator Android ke server PC',
         url: ApiKey.emulatorBaseUrl,
@@ -29,12 +35,6 @@ class AuthServerStatusBadge extends StatelessWidget {
         subtitle: 'Bisa diakses dari HP fisik di jaringan Wi-Fi yang sama',
         url: ApiKey.lanBaseUrl,
         icon: Icons.wifi_rounded,
-      ),
-      _EndpointOption(
-        title: 'Server Produksi (Live Cloud)',
-        subtitle: 'https://sigap.humacode.my.id',
-        url: ApiKey.productionBaseUrl,
-        icon: Icons.cloud_done_rounded,
       ),
     ];
 

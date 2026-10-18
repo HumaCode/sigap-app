@@ -18,7 +18,18 @@ class ApiInterceptor extends Interceptor {
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
+    options.baseUrl = ApiKey.baseUrl;
     options.headers['Accept'] = 'application/json';
+
+    // If options.path is absolute with old host, rewrite to active ApiKey.baseUrl
+    if (options.path.startsWith('http://') || options.path.startsWith('https://')) {
+      final uri = Uri.tryParse(options.path);
+      final activeUri = Uri.tryParse(ApiKey.baseUrl);
+      if (uri != null && activeUri != null && uri.host != activeUri.host) {
+        final pathAfterApi = uri.path.replaceFirst(RegExp(r'^/?(api/v1/)?'), '');
+        options.path = '${ApiKey.baseUrl}$pathAfterApi';
+      }
+    }
 
     if (ApiKey.apiKey.isNotEmpty) {
       options.headers['X-App-Key'] = ApiKey.apiKey;
