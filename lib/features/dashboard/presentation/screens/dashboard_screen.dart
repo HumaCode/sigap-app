@@ -75,8 +75,10 @@ class DashboardScreen extends StatelessWidget {
                     physics: const AlwaysScrollableScrollPhysics(),
                     child: Column(
                       children: [
-                        if (stats.isFromCache)
-                          OfflineBanner(cachedAt: stats.cachedAt),
+                        ConnectionStatusBanner(
+                          isOffline: stats.isFromCache,
+                          cachedAt: stats.cachedAt,
+                        ),
 
                         Padding(
                           padding: const EdgeInsets.symmetric(
@@ -94,11 +96,16 @@ class DashboardScreen extends StatelessWidget {
                                     vertical: 6,
                                   ),
                                   decoration: BoxDecoration(
-                                    color: AppColors.statusOperationalBg,
+                                    color: stats.isFromCache
+                                        ? AppColors.statusDegradedBg
+                                        : AppColors.statusOperationalBg,
                                     borderRadius: BorderRadius.circular(20),
                                     border: Border.all(
-                                      color: AppColors.statusOperational
-                                          .withValues(alpha: 0.3),
+                                      color: stats.isFromCache
+                                          ? AppColors.statusDegraded
+                                              .withValues(alpha: 0.3)
+                                          : AppColors.statusOperational
+                                              .withValues(alpha: 0.3),
                                       width: 1,
                                     ),
                                   ),
@@ -108,16 +115,22 @@ class DashboardScreen extends StatelessWidget {
                                       Container(
                                         width: 6,
                                         height: 6,
-                                        decoration: const BoxDecoration(
+                                        decoration: BoxDecoration(
                                           shape: BoxShape.circle,
-                                          color: AppColors.statusOperational,
+                                          color: stats.isFromCache
+                                              ? AppColors.statusDegraded
+                                              : AppColors.statusOperational,
                                         ),
                                       ),
                                       const SizedBox(width: 8),
                                       Text(
-                                        'SRE TELEMETRY STREAM ONLINE · 24/7 ACTIVE',
+                                        stats.isFromCache
+                                            ? 'SRE TELEMETRY STREAM OFFLINE · DATA CACHE'
+                                            : 'SRE TELEMETRY STREAM ONLINE · 24/7 ACTIVE',
                                         style: AppTypography.labelXs.copyWith(
-                                          color: const Color(0xFF065F46),
+                                          color: stats.isFromCache
+                                              ? AppColors.tertiary
+                                              : const Color(0xFF065F46),
                                           fontWeight: FontWeight.w800,
                                           letterSpacing: 0.6,
                                         ),
