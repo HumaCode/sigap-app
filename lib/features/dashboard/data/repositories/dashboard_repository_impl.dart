@@ -12,10 +12,24 @@ class DashboardRepositoryImpl implements DashboardRepository {
   static const String _cacheKey = 'dashboard_stats_cache';
 
   @override
+  DashboardStatsEntity? getCachedStats() {
+    final cached = CacheService.get(_cacheKey);
+    final cachedAt = CacheService.getCachedAt(_cacheKey);
+    if (cached != null && cached is Map) {
+      return DashboardStatsModel.fromJson(
+        Map<String, dynamic>.from(cached),
+        isFromCache: true,
+        cachedAt: cachedAt,
+      );
+    }
+    return null;
+  }
+
+  @override
   Future<DashboardStatsEntity> getDashboardStats() async {
     try {
       final statsModel = await remoteDataSource.getStats();
-      final entity = statsModel.toEntity();
+      final entity = statsModel.toEntity(isFromCache: false);
 
       // Cache for offline resilience
       await CacheService.put(_cacheKey, {
@@ -27,19 +41,15 @@ class DashboardRepositoryImpl implements DashboardRepository {
         'avg_latency_ms': entity.avgLatencyMs,
         'mttr': entity.mttr,
         'total_heartbeats': entity.totalHeartbeats,
+        'latency_history': entity.latencyHistory,
       });
 
       return entity;
     } catch (_) {
-      // Offline fallback from Hive cache
-      final cached = CacheService.get(_cacheKey);
-      final cachedAt = CacheService.getCachedAt(_cacheKey);
-      if (cached != null && cached is Map) {
-        return DashboardStatsModel.fromJson(
-          Map<String, dynamic>.from(cached),
-          isFromCache: true,
-          cachedAt: cachedAt,
-        );
+      // Offline fallback from Hive cache or defaults
+      final cached = getCachedStats();
+      if (cached != null) {
+        return cached;
       }
       return DashboardStatsModel.fromJson(
         {},

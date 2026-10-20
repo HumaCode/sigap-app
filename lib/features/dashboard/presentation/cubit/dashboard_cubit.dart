@@ -8,12 +8,22 @@ class DashboardCubit extends Cubit<DashboardState> {
   DashboardCubit({required this.repository}) : super(DashboardInitial());
 
   Future<void> loadDashboard() async {
-    emit(DashboardLoading());
+    // 1. Tampilkan data cache seketika (0 delay) jika tersedia agar tidak menunggu lama
+    final cached = repository.getCachedStats();
+    if (cached != null) {
+      emit(DashboardLoaded(stats: cached));
+    } else {
+      emit(DashboardLoading());
+    }
+
+    // 2. Fetch data terbaru dari server di background
     try {
       final stats = await repository.getDashboardStats();
       emit(DashboardLoaded(stats: stats));
     } catch (e) {
-      emit(DashboardError(e.toString()));
+      if (state is! DashboardLoaded) {
+        emit(DashboardError(e.toString()));
+      }
     }
   }
 

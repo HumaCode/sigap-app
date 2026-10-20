@@ -37,7 +37,7 @@ class ApiConstants {
   // Device registration for FCM
   static String get deviceToken => ApiKey.deviceToken;
 
-  // Network Timeouts
-  static const Duration connectTimeout = Duration(seconds: 45);
-  static const Duration receiveTimeout = Duration(seconds: 45);
+  // Network Timeouts (Responsive for Mobile)
+  static const Duration connectTimeout = Duration(seconds: 8);
+  static const Duration receiveTimeout = Duration(seconds: 10);
 }
